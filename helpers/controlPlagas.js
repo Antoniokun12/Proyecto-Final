@@ -1,17 +1,17 @@
-import empleados from "../models/Administrador.js"
-const helpersEmpleados={
+import controlPlagas from "../models/Administrador.js"
+const helpersControlPlagas={
     validaradministrador:async (_id)=>{
-        const existe = await empleados.find({_id})
+        const existe = await controlPlagas.find({_id})
         if (existe){
             throw new Error ("Id Existe")
         }
     },
     validarExistaId:async (_id)=>{
-        const existe = await empleados.findById(_id)
+        const existe = await controlPlagas.findById(_id)
         if (existe==undefined){
             throw new Error ("Id no existe")
         }
     } 
 }
 
-export default helpersEmpleados
+export default helpersControlPlagas
