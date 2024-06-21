@@ -1,4 +1,4 @@
-import Administrador from "../models/Administrador.js"
+import Administrador from "../models/administrador.js"
 const helpersAdministrador={
     // validarClienteUnica:async (_id)=>{
     //     const existe = await Administrador.find({_id})

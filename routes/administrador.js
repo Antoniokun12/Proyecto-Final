@@ -3,6 +3,7 @@ import httpAdministrador from "../controllers/administrador.js";
 import helpersAdministrador from "../helpers/administrador.js";
 import { validarCampos } from "../middlewares/validar-campos.js";
 import { check } from "express-validator";
+import { validarJWT } from '../middlewares/validar-jwt.js';
 
 
 const router = Router();
@@ -10,10 +11,16 @@ const router = Router();
 router.get("/", httpAdministrador.getAdmin);
 router.get("/:id", httpAdministrador.getAdminID);
 router.post("/", [
+    validarJWT,
     check("cedula", "cc no puede estar vacio").notEmpty(),
-    check("cdula").isLength({ min: 8 }),
+    check("cedula").isLength({ min: 8 }),
     validarCampos
   ], httpAdministrador.postAdmin),
+  router.post("/login", [
+    check('email', "Debe ingresar el email").notEmpty(),
+    check('password', "Debe ingresar la password").notEmpty(),
+    validarCampos
+],httpAdministrador.login)
 router.put( "/actualizar/:id", [
     check("id", "Se necesita un mongoCc valido").isMongoId(),
     check("id").custom(helpersAdministrador.validarExistaId),
