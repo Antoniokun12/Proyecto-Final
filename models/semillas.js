@@ -1,0 +1,17 @@
+import mongoose from "mongoose";
+
+const SemillaSchema = new mongoose.Schema({
+    idProveedor: { type: mongoose.Schema.Types.ObjectId, ref: 'Proveedor', required: true },
+    numFactura:{type: String,required:true},
+    fechaCompra:{type: Date,default:Date.now},
+    fechaVencimiento:{type: Date,required:true},
+    especie:{type: String,required:true},
+    NumLote:{type: Number,required:true},
+    origen:{type: String,required:true},
+    poderGerminativo:{type: String,required:true},
+    unidadtotal:{type: Number,required:true},
+    total:{type: Number,required:true},
+})
+
+export default mongoose.model("Semilla", SemillaSchema)
+
