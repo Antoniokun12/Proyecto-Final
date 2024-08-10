@@ -13,6 +13,8 @@ const sueloSchema = new mongoose.Schema({
   operario:{type: String, required: true},
   responsable:{type: String, required: true},
   observaciones:{type: String, required: true},
+  estado:{type:Number, default:1}
+
 });
 
 export default mongoose.model("Suelo",sueloSchema);

@@ -8,6 +8,8 @@ const inventarioSchema = new mongoose.Schema({
     observacion: {type: String, required: true},
     unidad: {type: Number, required: true},
     cantidad: {type: Number, required: true},
+    estado:{type:Number, default:1}
+
 });
 
 export default mongoose.model("Inventario", inventarioSchema);

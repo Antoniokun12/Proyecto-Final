@@ -8,6 +8,8 @@ const Maquina_herramientaSchema=new mongoose.Schema({
     observaciones:{type:String,required:true},
     cantidad:{type:Number,required:true},
     total:{type:Number,required:true},
+    estado:{type:Number, default:1}
+
 })
 
 export default mongoose.model("Maquina_herramienta",Maquina_herramientaSchema)

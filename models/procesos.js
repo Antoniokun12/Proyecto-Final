@@ -6,7 +6,9 @@ const ProcesoSchema = new mongoose.Schema({
     tipo:{type: String,required:true},
     descripcion:{type: String,required:true},
     fechaInicio:{type: Date,required:true},
-    fechaFinal:{type: Date,required:true}
+    fechaFinal:{type: Date,required:true},
+    estado:{type:Number, default:1}
+
 })
 
 export default mongoose.model("Proceso", ProcesoSchema)

@@ -3,20 +3,29 @@ import Fertilizacion from "../models/fertilizacion.js";
 // import cron from "node-cron"
 const httpFertilizacion = {
     getFertilizacion: async (req, res) => {
-        const {busqueda} = req.query
-        const fertilizacion = await Fertilizacion.find(
-            {
-                $or: [
-                    {nombre: new RegExp(busqueda, "i") }
-                ]
-            }
-        )
-        res.json({ fertilizacion })
+        try {
+            const { busqueda } = req.query;
+            const fertilizacion = await Fertilizacion.find({
+                $or: [{ tipo: new RegExp(busqueda, "i") }]
+            });
+            res.json({ fertilizacion });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ err: "Error al obtener Fertilizacion" });
+        }
     },
     getFertizacionID: async (req, res) => {
-        const {_id} = req.params
-        const fertilizacion = await Fertilizacion.findById(_id)
-        res.json({ fertilizacion })
+        try {
+            const { id } = req.params;
+            const fertilizacion = await Fertilizacion.findById(id);
+            if (!fertilizacion) {
+                return res.status(404).json({ err: "Fertilizacion no encontrado" });
+            }
+            res.json({ fertilizacion });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ err: "Error al obtener Fertilizacion" });
+        }
     },
     getFertilizacionactivado: async (req, res) => {
         try {
@@ -79,7 +88,7 @@ const httpFertilizacion = {
     putFertilizacionDesactivar:async (req,res) => {
         const { id } = req.params;
         try {
-            const fertilizacion  = await fertilizacion .findByIdAndUpdate(id, { estado: 0 }, { new: true });
+            const fertilizacion  = await Fertilizacion.findByIdAndUpdate(id, { estado: 0 }, { new: true });
             if (!fertilizacion ) {
                 return res.status(404).json({ error: "fertilizacion  no encontrado" });
             }

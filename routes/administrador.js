@@ -22,6 +22,7 @@ router.post("/escribir", [
   check("cedula", "La cédula no puede estar vacía y debe ser numérica").notEmpty().isNumeric(),
   check("cedula").isLength({ min: 8 }).withMessage('La cédula debe tener al menos 8 caracteres'),
   check("cedula").custom(helpersAdministrador.cedulaExiste),
+  check("password", "tres letras y tres numeros").custom(helpersAdministrador.validarPassword),
   check("nombre", "nombre no puede estar vacio").notEmpty(),
   check("direccion", "la direccion no puede estar vacio").notEmpty(),
   check("email", "email no puede estar vacio").notEmpty().isEmail().withMessage('email debe ser válido'),

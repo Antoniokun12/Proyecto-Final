@@ -11,6 +11,8 @@ const SemillaSchema = new mongoose.Schema({
     poderGerminativo:{type: String,required:true},
     unidadtotal:{type: Number,required:true},
     total:{type: Number,required:true},
+    estado:{type:Number, default:1}
+
 })
 
 export default mongoose.model("Semilla", SemillaSchema)

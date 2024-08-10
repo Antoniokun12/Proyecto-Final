@@ -9,6 +9,7 @@ const gastosSchema = new mongoose.Schema({
     numero_factura: {type: String, required: true, unique: true},
     descripcion: {type: String, required: true},
     total: {type: Number, required: true},
+    estado:{type:Number, default:1}
 
 });
 

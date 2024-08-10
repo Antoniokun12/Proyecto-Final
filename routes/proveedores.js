@@ -10,6 +10,8 @@ const router = Router();
 
 router.get("/listar",[validarJWT],httpProveedores.getProveedores);
 router.get("/listarid/:id", httpProveedores.getProveedoresID);
+router.get("/listaractivados",httpProveedores.getProveedoractivado)
+router.get("/listardesactivados",httpProveedores.getProveedordesactivado)
 router.post("/escribir", [
   check("nombre", "nombre no puede estar vacio").notEmpty().isString(),
   check("direccion", "direccion no puede estar vacio").notEmpty().isString(),

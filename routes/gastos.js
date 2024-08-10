@@ -10,7 +10,7 @@ const router = Router();
 
 router.get("/listar",[validarJWT],httpGastos.getGastos);
 router.get("/listarid/:id", httpGastos.getGastosID);
-router.get("/listaractivados",httpGastos.getGastoactivado)
+router.get("/listaractivados", httpGastos.getGastoactivado)
 router.get("/listardesactivados",httpGastos.getGastodesactivado)
 
 router.post("/escribir", [
