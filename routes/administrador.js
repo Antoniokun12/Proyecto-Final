@@ -25,6 +25,7 @@ router.post("/escribir", [
   check("password", "tres letras y tres numeros").custom(helpersAdministrador.validarPassword),
   check("nombre", "nombre no puede estar vacio").notEmpty(),
   check("direccion", "la direccion no puede estar vacio").notEmpty(),
+  check("telefono", "la telefono no puede estar vacio").isNumeric().notEmpty(),
   check("email", "email no puede estar vacio").notEmpty().isEmail().withMessage('email debe ser válido'),
   check("email").custom(helpersAdministrador.emailExiste),
   validarCampos
