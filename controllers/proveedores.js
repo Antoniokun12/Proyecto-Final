@@ -3,19 +3,18 @@ import Proveedor from "../models/proveedores.js";
 // import cron from "node-cron"
 const httpProveedores = {
     getProveedores: async (req, res) => {
-        const {busqueda} = req.query
-        const proveedor = await Proveedor.find(
-            {
-                $or: [
-                    {nombre: new RegExp(busqueda, "i") }
-                ]
-            }
-        )
-        res.json({ proveedor})
+        try {
+            const proveedores = await Proveedor.find();
+            res.json({ proveedores });
+        } catch (error) {
+            console.error("Error al obtener proveedores:", error);
+            res.status(500).json({ error: "Error al obtener proveedores" });
+        }
     },
+
     getProveedoresID: async (req, res) => {
-        const {_id} = req.params
-        const proveedor = await Proveedor.findById(_id)
+        const { id } = req.params
+        const proveedor = await Proveedor.findById(id)
         res.json({ proveedor })
     },
     getProveedoractivado: async (req, res) => {
@@ -30,17 +29,17 @@ const httpProveedores = {
 
     getProveedordesactivado: async (req, res) => {
         try {
-        const desactivados = await Proveedor.find({ estado: 0 })
-        res.json({ desactivados })
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Error al obtener Proveedor desactivado' });
-    }
+            const desactivados = await Proveedor.find({ estado: 0 })
+            res.json({ desactivados })
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Error al obtener Proveedor desactivado' });
+        }
     },
     postProveedores: async (req, res) => {
         try {
-            const {nombre,direccion,telefono,email}=req.body
-            const proveedor= new Proveedor({nombre,direccion,telefono,email});
+            const { nombre, direccion, telefono, email } = req.body
+            const proveedor = new Proveedor({ nombre, direccion, telefono, email });
             await proveedor.save()
             console.log(proveedor);
             res.json({ message: "el proveedor fue creado exitosamente ", proveedor });
@@ -50,21 +49,21 @@ const httpProveedores = {
         }
 
     },
-    putProveedores:async (req, res) => {
+    putProveedores: async (req, res) => {
         try {
             const { id } = req.params;
             const { _id, estado, ...resto } = req.body;
-        
+
             const proveedorActualizado = await Proveedor.findByIdAndUpdate(id, resto, { new: true });
-        
+
             res.json({ proveedor: proveedorActualizado });
-          } catch (error) {
+        } catch (error) {
 
             console.error("Error updating proveedor:", error);
             res.status(400).json({ error: error.message || "No se pudo actualizar el proveedor" });
-          }
+        }
     },
-    putProveedoresActivar:async (req,res) => {
+    putProveedoresActivar: async (req, res) => {
         const { id } = req.params;
         try {
             const proveedor = await Proveedor.findByIdAndUpdate(id, { estado: 1 }, { new: true });
@@ -77,7 +76,7 @@ const httpProveedores = {
             res.status(500).json({ error: "Error interno del servidor" });
         }
     },
-    putProveedoresDesactivar:async (req,res) => {
+    putProveedoresDesactivar: async (req, res) => {
         const { id } = req.params;
         try {
             const proveedor = await Proveedor.findByIdAndUpdate(id, { estado: 0 }, { new: true });
