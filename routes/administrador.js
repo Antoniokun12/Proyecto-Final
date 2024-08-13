@@ -9,16 +9,18 @@ import helpersAdministrador from "../helpers/administrador.js";
 const router = Router();
 
 router.get("/listar", [validarJWT], httpAdministrador.getAdmin);
-router.get("/listarid/:id", httpAdministrador.getAdminID);
-router.get("/listaractivados", httpAdministrador.getAdministradoractivado)
-router.get("/listardesactivados", httpAdministrador.getAdministradordesactivado)
+router.get("/listarid/:id", [validarJWT], httpAdministrador.getAdminID);
+router.get("/listaractivados", [validarJWT], httpAdministrador.getAdministradoractivado)
+router.get("/listardesactivados", [validarJWT], httpAdministrador.getAdministradordesactivado)
 router.get("/email", [
+  validarJWT,
   check('email', 'El email debe estar bien escrito.').isEmail(),
   check('email').custom(helpersAdministrador.Noexisteelcorreo),
   validarCampos
 ], httpAdministrador.getemail);
 
 router.post("/escribir", [
+  validarJWT,
   check("cedula", "La cédula no puede estar vacía y debe ser numérica").notEmpty().isNumeric(),
   check("cedula").isLength({ min: 8 }).withMessage('La cédula debe tener al menos 8 caracteres'),
   check("cedula").custom(helpersAdministrador.cedulaExiste),
@@ -44,6 +46,7 @@ router.post("/recuperar-password", [
 
 
 router.put("/modificar/:id", [
+  validarJWT,
   check("id", "No es un ID válido").isMongoId(),
   check("id").custom(helpersAdministrador.validarExistaId),
   check("cedula", "La cédula no puede estar vacía y debe ser numérica").notEmpty().isNumeric(),
@@ -58,12 +61,14 @@ router.put("/modificar/:id", [
 ], httpAdministrador.putAdmin
 ),
   router.put("/activar/:id", [
+    validarJWT,
     check("id", "No es un ID válido").isMongoId(),
     check("id").custom(helpersAdministrador.validarExistaId),
     validarCampos
   ], httpAdministrador.putAdminActivar
   ),
   router.put("/desactivar/:id", [
+    validarJWT,
     check("id", "No es un ID válido").isMongoId(),
     check("id").custom(helpersAdministrador.validarExistaId),
     validarCampos

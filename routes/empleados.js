@@ -8,12 +8,13 @@ import { check } from "express-validator";
 
 const router = Router();
 
-router.get("/listar",[validarJWT],httpEmpleados.getEmpleados);
-router.get("/listarid/:id", httpEmpleados.getEmpleadosID);
-router.get("/listaractivados",httpEmpleados.getEmpleadoactivado)
-router.get("/listardesactivados",httpEmpleados.getEmpleadodesactivado)
+router.get("/listar", [validarJWT], httpEmpleados.getEmpleados);
+router.get("/listarid/:id", [validarJWT], httpEmpleados.getEmpleadosID);
+router.get("/listaractivados", [validarJWT], httpEmpleados.getEmpleadoactivado)
+router.get("/listardesactivados", [validarJWT], httpEmpleados.getEmpleadodesactivado)
 
 router.post("/escribir", [
+  validarJWT,
   check("nombre", "nombre no puede estar vacio").notEmpty(),
   check("documento").custom(helpersEmpleados.documentoExiste),
   check("documento").isLength({ min: 8 }).withMessage('documento debe tener al menos 8 caracteres'),
@@ -27,10 +28,11 @@ router.post("/escribir", [
   // check("fechaContratacion", "fechaContratacion no puede estar vacia").notEmpty(),
   // check("fechaNacimiento", "fechaNacimiento debe ser una fecha válida").isISO8601().toDate(),
   check("telefono", "telefono no puede estar vacio").notEmpty().isMobilePhone(),
-    validarCampos
-  ], httpEmpleados.postEmpleados),
+  validarCampos
+], httpEmpleados.postEmpleados),
 
-router.put( "/modificar/:id", [
+  router.put("/modificar/:id", [
+    validarJWT,
     check("id", "Se necesita un mongoId valido").isMongoId(),
     check("id").custom(helpersEmpleados.validarExistaId),
     check("nombre", "nombre no puede estar vacio").notEmpty(),
@@ -47,18 +49,20 @@ router.put( "/modificar/:id", [
     check("telefono", "telefono no puede estar vacio").notEmpty().isMobilePhone(),
     validarCampos
   ], httpEmpleados.putEmpleados
-),
-router.put("/activar/:id", [
+  ),
+  router.put("/activar/:id", [
+    validarJWT,
     check("id", "Se necesita un mongoId valido").isMongoId(),
     check("id").custom(helpersEmpleados.validarExistaId),
     validarCampos
   ], httpEmpleados.putEmpleadosActivar
-),
-router.put("/desactivar/:id", [
+  ),
+  router.put("/desactivar/:id", [
+    validarJWT,
     check("id", "Se necesita un mongoId valido").isMongoId(),
     check("id").custom(helpersEmpleados.validarExistaId),
     validarCampos
   ], httpEmpleados.putEmpleadosDesactivar
-)
+  )
 
 export default router
