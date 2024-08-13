@@ -20,7 +20,7 @@ router.post("/escribir", [
   check("documento").isLength({ min: 8 }).withMessage('documento debe tener al menos 8 caracteres'),
   check("correo", "correo no puede estar vacio").notEmpty().isEmail().withMessage('email debe ser válido'),
   check("correo").custom(helpersEmpleados.correoExiste),
-  check('password', 'La contraseña debe contener al menos tres letras y tres números').custom(helpersEmpleados.validarPassword),
+  // check('password', 'La contraseña debe contener al menos tres letras y tres números').custom(helpersEmpleados.validarPassword),
   check("direccion", "direccion no puede estar vacia").notEmpty(),
   check("fechaNacimiento", "fechaNacimiento no puede estar vacio").notEmpty(),
   check("estudios", "estudios no puede estar vacio").notEmpty(),

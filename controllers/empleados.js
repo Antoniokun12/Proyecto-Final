@@ -38,8 +38,8 @@ const httpEmpleados = {
     },
     postEmpleados: async (req, res) => {
         try {
-            const { nombre, documento, correo, password, direccion, fechaNacimiento, telefono, estudios, descripcion } = req.body;
-            const empleado = new Empleado({ nombre, documento, correo, password, direccion, fechaNacimiento, telefono, estudios, descripcion, });
+            const { nombre, documento, correo, direccion, fechaNacimiento, telefono, estudios, descripcion } = req.body;
+            const empleado = new Empleado({ nombre, documento, correo, direccion, fechaNacimiento, telefono, estudios, descripcion, });
             await empleado.save()
             console.log(empleado);
             res.json({ message: "empleado creado exitosamente", empleado });
