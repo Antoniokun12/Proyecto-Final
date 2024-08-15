@@ -3,16 +3,14 @@ import Nomina from "../models/nomina.js";
 // import cron from "node-cron"
 const httpNominas = {
     getNominas: async (req, res) => {
-        const {busqueda} = req.query
-        const nomina = await Nomina.find(
-            {
-                $or: [
-                    {nombre: new RegExp(busqueda, "i") }
-                ]
-            }
-        )
-        res.json({ nomina})
+        try {
+            const nomina = await Nomina.find(); 
+            res.json({ nomina });
+        } catch (error) {
+            res.status(500).json({ message: "Error al obtener las nóminas", error });
+        }
     },
+    
     getNominasID: async (req, res) => {
         const {_id} = req.params
         const nomina = await Nomina.findById(_id)
@@ -65,13 +63,13 @@ const httpNominas = {
           }
     },
     putNominasActivar:async (req,res) => {
-        const {_id} = req.params
-        const nomina = await nominas.findByIdAndUpdate(_id, { estado: 1 }, { new: true })
+        const {id} = req.params
+        const nomina = await Nomina.findByIdAndUpdate(id, { estado: 1 }, { new: true })
         res.json({ nomina })
     },
     putNominasDesactivar:async (req,res) => {
-        const { _id } = req.params
-        const nomina= await nominas.findByIdAndUpdate(_id, { estado: 0 }, { new: true })
+        const {id } = req.params
+        const nomina= await Nomina.findByIdAndUpdate(id, { estado: 0 }, { new: true })
         res.json({ nomina })
     }
 }
