@@ -15,7 +15,7 @@ router.get("/listardesactivados",httpRiegos.getRiegodesactivado)
 router.post("/escribir", [
   check('idCultivo').custom(helpersRiego.validaridCultivo),
   check('idEmpleado').custom(helpersRiego.validaridEmpleado),
-  check("horaFin", "horaFin debe ser una fecha").isISO8601().toDate(),
+  // check("horaFin", "horaFin debe ser una fecha").isISO8601().toDate(),
   check("horaFin", "horaFin no puede estar vacia").notEmpty(),
   check("diasTransplante", "diasTransplante no puede estar vacio").notEmpty().isString(),
   check("estadoFenologico", "estadoFenologico no puede estar vacio").notEmpty().isString(),

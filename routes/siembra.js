@@ -14,12 +14,17 @@ router.get("/listaractivados",httpSiembras.getSiembraactivado)
 router.get("/listardesactivados",httpSiembras.getSiembradesactivado)
 router.post("/escribir", [
   check('idCultivo').custom(helpersSiembras.validaridCultivo),
-  check('idEmpleado').custom(helpersSiembras.validaridInventario),
-  check('idInventario').custom(helpersSiembras.validaridEmpleado),
-  check('fechacosecha')
-  .isAfter('fechasiembra')
-  .withMessage('La fecha de cosecha debe ser posterior a la fecha de siembra'),
-  check("transplante", "transplante no puede estar vacio").notEmpty().isString(),
+  check('idEmpleado').custom(helpersSiembras.validaridEmpleado),
+  check('idInventario').custom(helpersSiembras.validaridInventario),
+    // check('fechacosecha')
+    // .isISO8601().toDate()
+    // .withMessage('La fecha de cosecha debe ser una fecha válida')
+    // .custom((value, { req }) => {
+    //   const fechaSiembra = req.body.fechasiembra ? new Date(req.body.fechasiembra) : new Date();
+    //   return value > fechaSiembra;
+    // })
+    // .withMessage('La fecha de cosecha debe ser posterior a la fecha de siembra'),
+    // check("transplante", "transplante no puede estar vacio").isBoolean,
   check("CultivoAnterior", "CultivoAnterior no puede estar vacio").notEmpty().isString(),
     validarCampos
   ], httpSiembras.postSiembras),
@@ -29,10 +34,15 @@ router.put( "/modificar/:id", [
     check('idCultivo').custom(helpersSiembras.validaridCultivo),
     check('idEmpleado').custom(helpersSiembras.validaridInventario),
     check('idInventario').custom(helpersSiembras.validaridEmpleado),
-    check('fechacosecha')
-    .isAfter('fechasiembra')
-    .withMessage('La fecha de cosecha debe ser posterior a la fecha de siembra'),
-    check("transplante", "transplante no puede estar vacio").notEmpty().isString(),
+    // check('fechacosecha')
+    // .isISO8601().toDate()
+    // .withMessage('La fecha de cosecha debe ser una fecha válida')
+    // .custom((value, { req }) => {
+    //   const fechaSiembra = req.body.fechasiembra ? new Date(req.body.fechasiembra) : new Date();
+    //   return value > fechaSiembra;
+    // })
+    // .withMessage('La fecha de cosecha debe ser posterior a la fecha de siembra'),
+    // check("transplante", "transplante no puede estar vacio").isBoolean,
     check("CultivoAnterior", "CultivoAnterior no puede estar vacio").notEmpty().isString(),
     validarCampos
   ], httpSiembras.putSiembras

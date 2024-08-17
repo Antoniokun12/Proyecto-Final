@@ -19,7 +19,7 @@ router.post("/escribir", [
   check('idMaquina_herramienta').custom(helpersInventarios.validaridMaquina_herramienta),
   check("tipo", "tipo no puede estar vacio, solo texto").notEmpty().isString(),
   check("observacion", "observacion no puede estar vacio, solo texto").notEmpty().isString(),
-  check("unidad", "unidad no puede estar vacio, solo texto").notEmpty().isString(),
+  check("unidad", "unidad no puede estar vacio, solo texto").notEmpty().isNumeric(),
   check("cantidad", "cantidad no puede estar vacio, solo numeros").notEmpty().isNumeric(),
     validarCampos
   ], httpInventarios.postInventarios),
