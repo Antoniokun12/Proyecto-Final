@@ -2,17 +2,27 @@ import Parcela from "../models/parcelas.js";
 // import { json } from "express";
 // import cron from "node-cron"
 const httpParcelas = {
+    // getParcelas: async (req, res) => {
+    //     const {busqueda} = req.query
+    //     const parcela = await Parcela.find(
+    //         {
+    //             $or: [
+    //                 {detalle: new RegExp(busqueda, "i") }
+    //             ]
+    //         }
+    //     )
+    //     res.json({ parcela})
+    // },
     getParcelas: async (req, res) => {
-        const {busqueda} = req.query
-        const parcela = await Parcela.find(
-            {
-                $or: [
-                    {nombre: new RegExp(busqueda, "i") }
-                ]
-            }
-        )
-        res.json({ parcela})
+        try {
+            const parcela = await Parcela.find();
+            res.json({ parcela });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ err: "Error al obtener parcelas" });
+        }
     },
+    
     getParcelasID: async (req, res) => {
         const {_id} = req.params
         const parcela = await Parcela.findById(_id)
@@ -40,8 +50,8 @@ const httpParcelas = {
     
     postParcelas: async (req, res) => {
         try {
-            const {idFinca,ubicacion,numero,cultivoAnterior,cultivoActual,detalle,estado,area,asistenteTecnico}=req.body
-            const parcela = new Parcela({idFinca,ubicacion,numero,cultivoAnterior,cultivoActual,detalle,estado,area,asistenteTecnico});
+            const {idFinca,ubicacionGeografica,numero,cultivoAnterior,cultivoActual,detalle,estado,area,asistenteTecnico}=req.body
+            const parcela = new Parcela({idFinca,ubicacionGeografica,numero,cultivoAnterior,cultivoActual,detalle,estado,area,asistenteTecnico});
             await parcela.save()
             console.log(parcela);
             res.json({ message: "la parcela fue creada exitosamente ", parcela });
@@ -49,7 +59,6 @@ const httpParcelas = {
             console.log(error);
             res.status(400).json({ error: "No se pudo crear la parcela" })
         }
-
     },
     putParcelas:async (req, res) => {
         try {

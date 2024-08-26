@@ -2,17 +2,27 @@ import Riego from "../models/riego.js";
 // import { json } from "express";
 // import cron from "node-cron"
 const httpRiegos = {
+    // getRiegos: async (req, res) => {
+    //     const {busqueda} = req.query
+    //     const riego = await Riego.find(
+    //         {
+    //             $or: [
+    //                 {nombre: new RegExp(busqueda, "i") }
+    //             ]
+    //         }
+    //     )
+    //     res.json({ riego})
+    // },
     getRiegos: async (req, res) => {
-        const {busqueda} = req.query
-        const riego = await Riego.find(
-            {
-                $or: [
-                    {nombre: new RegExp(busqueda, "i") }
-                ]
-            }
-        )
-        res.json({ riego})
+        try {
+            const riego = await Riego.find();
+            res.json({ riego });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ err: "Error al obtener riegos" });
+        }
     },
+    
     getRiegosID: async (req, res) => {
         const {_id} = req.params
         const riego = await Riego.findById(_id)

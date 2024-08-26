@@ -3,18 +3,30 @@ import bcryptjs from "bcryptjs";
 import { generarJWT } from '../middlewares/validar-jwt.js';
 
 const httpAdministrador = {
+    // getAdmin: async (req, res) => {
+    //     try {
+    //         const { busqueda } = req.query;
+    //         const admin = await Administrador.find({
+    //             $or: [{ nombre: new RegExp(busqueda, "i") }]
+    //         });
+    //         res.json({ admin });
+    //     } catch (error) {
+    //         console.log(error);
+    //         res.status(500).json({ err: "Error al obtener administradores" });
+    //     }
+    // },
     getAdmin: async (req, res) => {
         try {
-            const { busqueda } = req.query;
-            const admin = await Administrador.find({
-                $or: [{ nombre: new RegExp(busqueda, "i") }]
-            });
+            // Obtener todos los administradores sin ningún filtro
+            const admin = await Administrador.find();
             res.json({ admin });
         } catch (error) {
             console.log(error);
             res.status(500).json({ err: "Error al obtener administradores" });
         }
     },
+    
+
     getAdminID: async (req, res) => {
         try {
             const { id } = req.params;

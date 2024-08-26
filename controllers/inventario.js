@@ -2,16 +2,25 @@ import Inventario from "../models/inventario.js";
 // import { json } from "express";
 // import cron from "node-cron"
 const httpInventarios = {
+    // getInventarios: async (req, res) => {
+    //     const {busqueda} = req.query
+    //     const inventario = await Inventario.find(
+    //         {
+    //             $or: [
+    //                 {nombre: new RegExp(busqueda, "i") }
+    //             ]
+    //         }
+    //     )
+    //     res.json({ inventario })
+    // },
     getInventarios: async (req, res) => {
-        const {busqueda} = req.query
-        const inventario = await Inventario.find(
-            {
-                $or: [
-                    {nombre: new RegExp(busqueda, "i") }
-                ]
-            }
-        )
-        res.json({ inventario })
+        try {
+            const inventario = await Inventario.find({});
+            res.json({ inventario });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Error al obtener los inventarios' });
+        }
     },
     getInventariosID: async (req, res) => {
         const {_id} = req.params

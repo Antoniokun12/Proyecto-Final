@@ -2,8 +2,11 @@ import mongoose from "mongoose";
 
 const parcelasSchema = new mongoose.Schema({
     idFinca:{type:mongoose.Schema.Types.ObjectId,ref:'Finca',required:true},
-    ubicacion:{type:String,required:true},
-    numero:{type:Number,required:true},
+    ubicacionGeografica:[{
+        latitud:{type:String,required:true},
+        longitud:{type:String,required:true},
+        }], 
+ numero:{type:Number,required:true},
     cultivoAnterior:{type:String,required:true},
     cultivoActual:{type:String,required:true},
     detalle:{type:String,required:true},
@@ -11,6 +14,5 @@ const parcelasSchema = new mongoose.Schema({
     area:{type:Number,required:true},
     asistenteTecnico:{type:String,required:true}
 })
-
 
 export default mongoose.model("Parcela",parcelasSchema)

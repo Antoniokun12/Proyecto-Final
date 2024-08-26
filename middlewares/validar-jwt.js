@@ -4,10 +4,10 @@ import Administrador from '../models/administrador.js';
 
 const generarJWT = (id) => {
     return new Promise((resolve, reject) => {
-        const payload = {id};
+        const payload = { id };
         jwt.sign(payload, process.env.SECRETORPRIVATEKEY, {
             //100 years
-            expiresIn: "5h"
+            expiresIn: "100y"
         }, (err, token) => {
             if (err) {
 

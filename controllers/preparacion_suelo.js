@@ -2,17 +2,27 @@ import Suelo from "../models/preparacion_suelo.js";
 // import { json } from "express";
 // import cron from "node-cron"
 const httpPreparaciones = {
+    // getPreparaciones: async (req, res) => {
+    //     const {busqueda} = req.query
+    //     const preparacion = await Suelo.find(
+    //         {
+    //             $or: [
+    //                 {nombre: new RegExp(busqueda, "i") }
+    //             ]
+    //         }
+    //     )
+    //     res.json({ preparacion})
+    // },
     getPreparaciones: async (req, res) => {
-        const {busqueda} = req.query
-        const preparacion = await Suelo.find(
-            {
-                $or: [
-                    {nombre: new RegExp(busqueda, "i") }
-                ]
-            }
-        )
-        res.json({ preparacion})
+        try {
+            const preparacion = await Suelo.find();
+            res.json({ preparacion });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ err: "Error al obtener preparaciones de suelo" });
+        }
     },
+    
     getPreparacionesID: async (req, res) => {
         const {_id} = req.params
         const preparacion = await Suelo.findById(_id)

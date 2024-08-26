@@ -2,17 +2,28 @@ import Cultivo from "../models/cultivos.js";
 // import { json } from "express";
 // import cron from "node-cron"
 const httpCultivo = {
+    // getCultivo: async (req, res) => {
+    //     const {busqueda} = req.query
+    //     const cultivos = await Cultivo.find(
+    //         {
+    //             $or: [
+    //                 {nombre: new RegExp(busqueda, "i") }
+    //             ]
+    //         }
+    //     )
+    //     res.json({ cultivos })
+    // },
     getCultivo: async (req, res) => {
-        const {busqueda} = req.query
-        const cultivos = await Cultivo.find(
-            {
-                $or: [
-                    {nombre: new RegExp(busqueda, "i") }
-                ]
-            }
-        )
-        res.json({ cultivos })
+        try {
+            // Obtener todos los cultivos sin ningún filtro
+            const cultivos = await Cultivo.find();
+            res.json({ cultivos });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ err: "Error al obtener cultivos" });
+        }
     },
+    
     getCultivoID: async (req, res) => {
         const {_id} = req.params
         const cultivos = await Cultivo.findById(_id)

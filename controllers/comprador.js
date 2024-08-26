@@ -2,21 +2,32 @@ import Comprador from "../models/comprador.js";
 // import { json } from "express";
 // import cron from "node-cron"
 const httpComprador = {
+    // getComprador: async (req, res) => {
+    //     const {busqueda} = req.query
+    //     const comprador = await Comprador.find(
+    //         {
+    //             $or: [
+    //                 {nombre: new RegExp(busqueda, "i") }
+    //             ]
+    //         }
+    //     )
+    //     res.json({ comprador })
+    // },
     getComprador: async (req, res) => {
-        const {busqueda} = req.query
-        const compra = await Comprador.find(
-            {
-                $or: [
-                    {nombre: new RegExp(busqueda, "i") }
-                ]
-            }
-        )
-        res.json({ compra })
+        try {
+            // Obtener todos los compradores sin ningún filtro
+            const comprador = await Comprador.find();
+            res.json({ comprador });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ err: "Error al obtener compradores" });
+        }
     },
+    
     getCompradorID: async (req, res) => {
         const {_id} = req.params
-        const compra = await Comprador.findById(_id)
-        res.json({ compra })
+        const comprador = await Comprador.findById(_id)
+        res.json({ comprador })
     },
     getCompradoractivado: async (req, res) => {
         try {
@@ -39,11 +50,11 @@ const httpComprador = {
     },
     postComprador: async (req, res) => {
         try {
-            const {idProduccion,especie,nombre,telefono,cantidad,nguiaTransporte,nloteComercial}=req.body;
-            const compra = new Comprador({idProduccion,especie,nombre,telefono,cantidad,nguiaTransporte,nloteComercial});
-            await compra.save()
-            console.log(compra);
-            res.json({ message: "comprador creado exitosamente", compra });
+            const {idProduccion,especie,nombre,telefono,cantidad,nguiaTransporte,valor}=req.body;
+            const comprador = new Comprador({idProduccion,especie,nombre,telefono,cantidad,nguiaTransporte,valor});
+            await comprador.save()
+            console.log(comprador);
+            res.json({ message: "comprador creado exitosamente", comprador });
         } catch (error) {
             console.log(error);
             res.status(400).json({ error: "No se pudo crear el comprador" })
@@ -57,7 +68,7 @@ const httpComprador = {
         
             const compradorActualizado = await Comprador.findByIdAndUpdate(id, resto, { new: true });
         
-            res.json({ compra: compradorActualizado });
+            res.json({ comprador: compradorActualizado });
           } catch (error) {
             console.error("Error updating comprador:", error);
             res.status(400).json({ error: error.message || "No se pudo actualizar el comprador" });
@@ -66,11 +77,11 @@ const httpComprador = {
     putCompradorActivar:async (req,res) => {
         const { id } = req.params;
         try {
-            const compra = await Comprador.findByIdAndUpdate(id, { estado: 1 }, { new: true });
-            if (!compra) {
+            const comprador = await Comprador.findByIdAndUpdate(id, { estado: 1 }, { new: true });
+            if (!comprador) {
                 return res.status(404).json({ error: "comprador no encontrado" });
             }
-            res.json({ compra });
+            res.json({ comprador });
         } catch (error) {
             console.error("Error al activar comprador", error);
             res.status(500).json({ error: "Error interno del servidor" });
@@ -79,11 +90,11 @@ const httpComprador = {
     putCompradorDesactivar:async (req,res) => {
         const { id } = req.params;
         try {
-            const compra = await Comprador.findByIdAndUpdate(id, { estado: 0 }, { new: true });
-            if (!compra) {
+            const comprador = await Comprador.findByIdAndUpdate(id, { estado: 0 }, { new: true });
+            if (!comprador) {
                 return res.status(404).json({ error: "comprador no encontrado" });
             }
-            res.json({ compra });
+            res.json({ comprador });
         } catch (error) {
             console.error("Error al desactivar comprador", error);
             res.status(500).json({ error: "Error interno del servidor" });
@@ -92,4 +103,3 @@ const httpComprador = {
 }
 
 export default httpComprador
-

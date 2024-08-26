@@ -2,17 +2,29 @@ import Analisis from "../models/analisis_suelo.js";
 // import { json } from "express";
 // import cron from "node-cron"
 const httpAnalisisSuelo = {
+    // getAnalisis: async (req, res) => {
+    //     const {busqueda} = req.query
+    //     const analisis = await Analisis.find(
+    //         {
+    //             $or: [
+    //                 {nombre: new RegExp(busqueda, "i") }
+    //             ]
+    //         }
+    //     )
+    //     res.json({ analisis })
+    // },
+
     getAnalisis: async (req, res) => {
-        const {busqueda} = req.query
-        const analisis = await Analisis.find(
-            {
-                $or: [
-                    {nombre: new RegExp(busqueda, "i") }
-                ]
-            }
-        )
-        res.json({ analisis })
+        try {
+            // Obtener todos los análisis sin ningún filtro
+            const analisis = await Analisis.find();
+            res.json({ analisis });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ err: "Error al obtener análisis" });
+        }
     },
+    
     getAnalisisID: async (req, res) => {
         const {id} = req.params
         const analisis = await Analisis.findById(id)

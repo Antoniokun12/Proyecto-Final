@@ -2,20 +2,29 @@ import Insumo from "../models/insumos.js";
 // import { json } from "express";
 // import cron from "node-cron"
 const httpInsumos = {
+    // getInsumos: async (req, res) => {
+    //     const {busqueda} = req.query
+    //     const insumo = await Insumo.find(
+    //         {
+    //             $or: [
+    //                 {nombre: new RegExp(busqueda, "i") }
+    //             ]
+    //         }
+    //     )
+    //     res.json({ insumo })
+    // },
     getInsumos: async (req, res) => {
-        const {busqueda} = req.query
-        const insumo = await Insumo.find(
-            {
-                $or: [
-                    {nombre: new RegExp(busqueda, "i") }
-                ]
-            }
-        )
-        res.json({ insumo })
+        try {
+            const insumos = await Insumo.find({});
+            res.json({ insumos });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Error al obtener las insumos' });
+        }
     },
     getInsumosID: async (req, res) => {
-        const {_id} = req.params
-        const insumo = await Insumo.findById(_id)
+        const {id} = req.params
+        const insumo = await Insumo.findById(id)
         res.json({ insumo })
     },
     getInsumoactivado: async (req, res) => {

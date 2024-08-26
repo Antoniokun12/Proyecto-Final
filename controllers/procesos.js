@@ -2,17 +2,27 @@ import Proceso from "../models/procesos.js";
 // import { json } from "express";
 // import cron from "node-cron"
 const httpProcesos = {
+    // getProcesos: async (req, res) => {
+    //     const {busqueda} = req.query
+    //     const proceso = await Proceso.find(
+    //         {
+    //             $or: [
+    //                 {tipo: new RegExp(busqueda, "i") }
+    //             ]
+    //         }
+    //     )
+    //     res.json({ proceso})
+    // },
     getProcesos: async (req, res) => {
-        const {busqueda} = req.query
-        const proceso = await Proceso.find(
-            {
-                $or: [
-                    {nombre: new RegExp(busqueda, "i") }
-                ]
-            }
-        )
-        res.json({ proceso})
+        try {
+            const proceso = await Proceso.find();
+            res.json({ proceso });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ err: "Error al obtener procesos" });
+        }
     },
+    
     getProcesosID: async (req, res) => {
         const {_id} = req.params
         const proceso = await Proceso.findById(_id)

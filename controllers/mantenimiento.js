@@ -2,17 +2,27 @@ import Mantenimiento from "../models/mantenimiento.js";
 // import { json } from "express";
 // import cron from "node-cron"
 const httpMantenimientos = {
+    // getMantenimientos: async (req, res) => {
+    //     const {busqueda} = req.query
+    //     const mantenimiento = await Mantenimiento.find(
+    //         {
+    //             $or: [
+    //                 {nombre: new RegExp(busqueda, "i") }
+    //             ]
+    //         }
+    //     )
+    //     res.json({ mantenimiento })
+    // },
     getMantenimientos: async (req, res) => {
-        const {busqueda} = req.query
-        const mantenimiento = await Mantenimiento.find(
-            {
-                $or: [
-                    {nombre: new RegExp(busqueda, "i") }
-                ]
-            }
-        )
-        res.json({ mantenimiento })
+        try {
+            const mantenimiento = await Mantenimiento.find();
+            res.json({ mantenimiento });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ err: "Error al obtener mantenimientos" });
+        }
     },
+    
     getMantenimientosID: async (req, res) => {
         const {_id} = req.params
         const mantenimiento = await Mantenimiento.findById(_id)

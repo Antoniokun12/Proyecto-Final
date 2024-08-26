@@ -2,17 +2,27 @@ import Siembra from "../models/siembra.js";
 // import { json } from "express";
 // import cron from "node-cron"
 const httpSiembras= {
+    // getSiembras: async (req, res) => {
+    //     const {busqueda} = req.query
+    //     const siembra = await Siembra.find(
+    //         {
+    //             $or: [
+    //                 {nombre: new RegExp(busqueda, "i") }
+    //             ]
+    //         }
+    //     )
+    //     res.json({ siembra})
+    // },
     getSiembras: async (req, res) => {
-        const {busqueda} = req.query
-        const siembra = await Siembra.find(
-            {
-                $or: [
-                    {nombre: new RegExp(busqueda, "i") }
-                ]
-            }
-        )
-        res.json({ siembra})
+        try {
+            const siembra = await Siembra.find();
+            res.json({ siembra });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ err: "Error al obtener siembras" });
+        }
     },
+    
     getSiembrasID: async (req, res) => {
         const {_id} = req.params
         const siembra = await Siembra.findById(_id)

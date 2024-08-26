@@ -2,17 +2,28 @@ import ControlPlaga from "../models/control_plagas.js";
 // import { json } from "express";
 // import cron from "node-cron"
 const httpControlPlaga = {
+    // getControlPlaga: async (req, res) => {
+    //     const {busqueda} = req.query
+    //     const controlplaga = await ControlPlaga.find(
+    //         {
+    //             $or: [
+    //                 {nombre: new RegExp(busqueda, "i") }
+    //             ]
+    //         }
+    //     )
+    //     res.json({ controlplaga })
+    // },
     getControlPlaga: async (req, res) => {
-        const {busqueda} = req.query
-        const controlplaga = await ControlPlaga.find(
-            {
-                $or: [
-                    {nombre: new RegExp(busqueda, "i") }
-                ]
-            }
-        )
-        res.json({ controlplaga })
+        try {
+            // Obtener todos los registros de control de plagas sin ningún filtro
+            const controlplaga = await ControlPlaga.find();
+            res.json({ controlplaga });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ err: "Error al obtener registros de control de plagas" });
+        }
     },
+    
     getControlPlagaID: async (req, res) => {
         const {_id} = req.params
         const controlplaga = await ControlPlaga.findById(_id)

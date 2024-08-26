@@ -8,10 +8,10 @@ import { check } from "express-validator";
 
 const router = Router();
 
-router.get("/listar",[validarJWT],httpInventarios.getInventarios);
+router.get("/listar", [validarJWT], httpInventarios.getInventarios);
 router.get("/listarid/:id", httpInventarios.getInventariosID);
-router.get("/listaractivados",httpInventarios.getInventarioactivado)
-router.get("/listardesactivados",httpInventarios.getInventariodesactivado)
+router.get("/listaractivados", httpInventarios.getInventarioactivado)
+router.get("/listardesactivados", httpInventarios.getInventariodesactivado)
 
 router.post("/escribir", [
   check('idSemilla').custom(helpersInventarios.validaridSemilla),
@@ -21,9 +21,10 @@ router.post("/escribir", [
   check("observacion", "observacion no puede estar vacio, solo texto").notEmpty().isString(),
   check("unidad", "unidad no puede estar vacio, solo texto").notEmpty().isString(),
   check("cantidad", "cantidad no puede estar vacio, solo numeros").notEmpty().isNumeric(),
-    validarCampos
-  ], httpInventarios.postInventarios),
-router.put( "/modificar/:id", [
+  validarCampos
+], httpInventarios.postInventarios),
+  router.put("/modificar/:id", [
+    validarJWT,
     check("id", "Se necesita un mongoId valido").isMongoId(),
     check("id").custom(helpersInventarios.validarExistaId),
     check('idSemilla').custom(helpersInventarios.validaridSemilla),
@@ -35,18 +36,18 @@ router.put( "/modificar/:id", [
     check("cantidad", "cantidad no puede estar vacio, solo numeros").notEmpty().isNumeric(),
     validarCampos
   ], httpInventarios.putInventarios
-),
-router.put("/activar/:id", [
+  ),
+  router.put("/activar/:id", [
     check("id", "Se necesita un mongoId valido").isMongoId(),
     check("id").custom(helpersInventarios.validarExistaId),
     validarCampos
   ], httpInventarios.putInventariosActivar
-),
-router.put("/desactivar/:id", [
+  ),
+  router.put("/desactivar/:id", [
     check("id", "Se necesita un mongoId valido").isMongoId(),
     check("id").custom(helpersInventarios.validarExistaId),
     validarCampos
   ], httpInventarios.putInventarioDesactivar
-)
+  )
 
 export default router

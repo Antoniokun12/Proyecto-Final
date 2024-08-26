@@ -2,17 +2,28 @@ import Sustrato from "../models/elaboracion_sustrato.js";
 // import { json } from "express";
 // import cron from "node-cron"
 const httpElaboracionSustrato = {
+    // getSustrato: async (req, res) => {
+    //     const {busqueda} = req.query
+    //     const sustra = await Sustrato.find(
+    //         {
+    //             $or: [
+    //                 {nombre: new RegExp(busqueda, "i") }
+    //             ]
+    //         }
+    //     )
+    //     res.json({ sustra })
+    // },
     getSustrato: async (req, res) => {
-        const {busqueda} = req.query
-        const sustra = await Sustrato.find(
-            {
-                $or: [
-                    {nombre: new RegExp(busqueda, "i") }
-                ]
-            }
-        )
-        res.json({ sustra })
+        try {
+            // Obtener todos los sustratos sin ningún filtro
+            const sustra = await Sustrato.find();
+            res.json({ sustra });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ err: "Error al obtener sustratos" });
+        }
     },
+    
     getSustratoID: async (req, res) => {
         const {_id} = req.params
         const sustra = await Sustrato.findById(_id)

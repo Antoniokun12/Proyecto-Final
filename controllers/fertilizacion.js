@@ -2,18 +2,28 @@ import Fertilizacion from "../models/fertilizacion.js";
 // import { json } from "express";
 // import cron from "node-cron"
 const httpFertilizacion = {
+    // getFertilizacion: async (req, res) => {
+    //     try {
+    //         const { busqueda } = req.query;
+    //         const fertilizacion = await Fertilizacion.find({
+    //             $or: [{ tipo: new RegExp(busqueda, "i") }]
+    //         });
+    //         res.json({ fertilizacion });
+    //     } catch (error) {
+    //         console.log(error);
+    //         res.status(500).json({ err: "Error al obtener Fertilizacion" });
+    //     }
+    // },
     getFertilizacion: async (req, res) => {
         try {
-            const { busqueda } = req.query;
-            const fertilizacion = await Fertilizacion.find({
-                $or: [{ tipo: new RegExp(busqueda, "i") }]
-            });
+            const fertilizacion = await Fertilizacion.find();
             res.json({ fertilizacion });
         } catch (error) {
-            console.log(error);
+            console.error(error);
             res.status(500).json({ err: "Error al obtener Fertilizacion" });
         }
     },
+    
     getFertizacionID: async (req, res) => {
         try {
             const { id } = req.params;

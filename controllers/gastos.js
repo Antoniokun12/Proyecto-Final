@@ -2,17 +2,27 @@ import Gasto from "../models/gastos.js";
 // import { json } from "express";
 // import cron from "node-cron"
 const httpGastos = {
+    // getGastos: async (req, res) => {
+    //     const {busqueda} = req.query
+    //     const gasto = await Gasto.find(
+    //         {
+    //             $or: [
+    //                 {nombre: new RegExp(busqueda, "i") }
+    //             ]
+    //         }
+    //     )
+    //     res.json({ gasto })
+    // },
     getGastos: async (req, res) => {
-        const {busqueda} = req.query
-        const gasto = await Gasto.find(
-            {
-                $or: [
-                    {nombre: new RegExp(busqueda, "i") }
-                ]
-            }
-        )
-        res.json({ gasto })
+        try {
+            const gasto = await Gasto.find();
+            res.json({ gasto });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ err: "Error al obtener gastos" });
+        }
     },
+    
     getGastosID: async (req, res) => {
         const {_id} = req.params
         const gasto = await Gasto.findById(_id)

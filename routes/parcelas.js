@@ -3,7 +3,7 @@ import httpParcelas from "../controllers/parcelas.js";
 import helpersParcelas from "../helpers/parcelas.js";
 import { validarCampos } from "../middlewares/validar-campos.js";
 import { validarJWT } from '../middlewares/validar-jwt.js';
-import { check } from "express-validator";
+import { check, body } from "express-validator";
 
 
 const router = Router();
@@ -16,8 +16,9 @@ router.get("/listardesactivados",httpParcelas.getParceladesactivado)
 router.post("/escribir", [
   check("idFinca", "idFinca no puede estar vacio").notEmpty().isMongoId().withMessage('debe ser un id de mongo'),
   check("idFinca").custom(helpersParcelas.validaridFinca),
-  check("ubicacion", "ubicacion no puede estar vacio").notEmpty().isString(),
-  check("numero", "numero no puede estar vacio").notEmpty().isNumeric(),
+  body('ubicacionGeografica').isArray({ min: 1 }).withMessage('ubicacion Geografica debe ser un array con al menos un elemento'),
+  body('ubicacionGeografica.*.latitud').notEmpty().isString(),
+  body('ubicacionGeografica.*.longitud').notEmpty().isString(),  check("numero", "numero no puede estar vacio").notEmpty().isNumeric(),
   check("cultivoAnterior", "cultivo Anterior no puede estar vacio").notEmpty().isString(),
   check("cultivoActual", "cultivo Actual no puede estar vacio").notEmpty().isString(),
   check("detalle", "detalle no puede estar vacio").notEmpty().isString(),
@@ -31,8 +32,10 @@ router.put( "/modificar/:id", [
     check("id").custom(helpersParcelas.validarExistaId),
     check("idFinca", "idFinca no puede estar vacio").notEmpty().isMongoId().withMessage('debe ser un id de mongo'),
     check("idFinca").custom(helpersParcelas.validaridFinca),
-    check("ubicacion", "ubicacion no puede estar vacio").notEmpty().isString(),
-    check("numero", "numero no puede estar vacio").notEmpty().isNumeric(),
+    body('ubicacionGeografica').isArray({ min: 1 }).withMessage('ubicacion Geografica debe ser un array con al menos un elemento'),
+    body('ubicacionGeografica.*.latitud').notEmpty().isString(),
+    body('ubicacionGeografica.*.longitud').notEmpty().isString(),
+        check("numero", "numero no puede estar vacio").notEmpty().isNumeric(),
     check("cultivoAnterior", "cultivo Anterior no puede estar vacio").notEmpty().isString(),
     check("cultivoActual", "cultivo Actual no puede estar vacio").notEmpty().isString(),
     check("detalle", "detalle no puede estar vacio").notEmpty().isString(),

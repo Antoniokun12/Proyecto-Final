@@ -3,19 +3,18 @@ import Semilla from "../models/semillas.js";
 // import cron from "node-cron"
 const httpSemillas = {
     getSemillas: async (req, res) => {
-        const {busqueda} = req.query
-        const semilla = await Semilla.find(
-            {
-                $or: [
-                    {nombre: new RegExp(busqueda, "i") }
-                ]
-            }
-        )
-        res.json({ semilla})
+        try {
+            const semillas = await Semilla.find({});
+            res.json({ semillas });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Error al obtener las semillas' });
+        }
     },
+    
     getSemillasID: async (req, res) => {
-        const {_id} = req.params
-        const semilla = await Semilla.findById(_id)
+        const {id} = req.params
+        const semilla = await Semilla.findById(id)
         res.json({ semilla })
     },
     getSemillasactivado: async (req, res) => {

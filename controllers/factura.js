@@ -2,17 +2,27 @@ import Factura from "../models/factura.js";
 // import { json } from "express";
 // import cron from "node-cron"
 const httpFacturas = {
+    // getFacturas: async (req, res) => {
+    //     const {busqueda} = req.query
+    //     const factura = await Factura.find(
+    //         {
+    //             $or: [
+    //                 {nombre: new RegExp(busqueda, "i") }
+    //             ]
+    //         }
+    //     )
+    //     res.json({ factura })
+    // },
     getFacturas: async (req, res) => {
-        const {busqueda} = req.query
-        const factura = await Factura.find(
-            {
-                $or: [
-                    {nombre: new RegExp(busqueda, "i") }
-                ]
-            }
-        )
-        res.json({ factura })
-    },
+      try {
+          const factura = await Factura.find();
+          res.json({ factura });
+      } catch (error) {
+          console.error(error);
+          res.status(500).json({ err: "Error al obtener facturas" });
+      }
+  },
+  
     getFacturasID: async (req, res) => {
         const {_id} = req.params
         const factura = await Factura.findById(_id)

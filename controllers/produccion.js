@@ -2,17 +2,27 @@ import Produccion from "../models/produccion.js";
 // import { json } from "express";
 // import cron from "node-cron"
 const httpProduccion = {
+    // getProduccion: async (req, res) => {
+    //     const {busqueda} = req.query
+    //     const produccciones = await Produccion.find(
+    //         {
+    //             $or: [
+    //                 {especie: new RegExp(busqueda, "i") }
+    //             ]
+    //         }
+    //     )
+    //     res.json({ produccciones})
+    // },
     getProduccion: async (req, res) => {
-        const {busqueda} = req.query
-        const produccciones = await Produccion.find(
-            {
-                $or: [
-                    {nombre: new RegExp(busqueda, "i") }
-                ]
-            }
-        )
-        res.json({ produccciones})
+        try {
+            const producciones = await Produccion.find();
+            res.json({ producciones });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ err: "Error al obtener producciones" });
+        }
     },
+    
     getProduccionID: async (req, res) => {
         const {_id} = req.params
         const produccciones = await Produccion.findById(_id)

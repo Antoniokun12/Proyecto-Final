@@ -2,17 +2,27 @@ import Finca from "../models/fincas.js";
 // import { json } from "express";
 // import cron from "node-cron"
 const httpFincas = {
+    // getFincas: async (req, res) => {
+    //     const {busqueda} = req.query
+    //     const finca = await Finca.find(
+    //         {
+    //             $or: [
+    //                 {nombre: new RegExp(busqueda, "i") }
+    //             ]
+    //         }
+    //     )
+    //     res.json({ finca })
+    // },
     getFincas: async (req, res) => {
-        const {busqueda} = req.query
-        const finca = await Finca.find(
-            {
-                $or: [
-                    {nombre: new RegExp(busqueda, "i") }
-                ]
-            }
-        )
-        res.json({ finca })
+        try {
+            const finca = await Finca.find();
+            res.json({ finca });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ err: "Error al obtener fincas" });
+        }
     },
+    
     getFincasID: async (req, res) => {
         const {_id} = req.params
         const finca = await Finca.findById(_id)

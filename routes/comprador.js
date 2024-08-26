@@ -16,23 +16,23 @@ router.post("/escribir", [
   check('idProduccion').custom(helpersComprador.validaridProduccion),
   check("especie", "especie no puede estar vacio").notEmpty(),
   check("nombre", "nombre no puede estar vacio").notEmpty(),
-  check("telefono", "telefono no puede estar vacio").notEmpty().isMobilePhone(),
+  check("telefono", "telefono no puede estar vacio").notEmpty().isString(),
   check("cantidad", "cantidad no puede estar vacio").notEmpty().isNumeric(),
   check("nguiaTransporte", "nguiaTransporte no puede estar vacio").notEmpty(),
-  check("nloteComercial", "nloteComercial no puede estar vacio").notEmpty(),
+  check("valor", "valor no puede estar vacio").notEmpty(),
     validarCampos
   ], httpComprador.postComprador),
-router.put( "/actualizar/:id", [
+router.put( "/modificar/:id", [
     check("id", "Se necesita un mongo ID valido").isMongoId(),
     check("idProduccion", "Se necesita un mongo ID valido").isMongoId(),
     check("id").custom(helpersComprador.validarExistaId),
     check('idProduccion').custom(helpersComprador.validaridProduccion),
     check("especie", "especie no puede estar vacio").notEmpty(),
     check("nombre", "nombre no puede estar vacio").notEmpty(),
-    check("telefono", "telefono no puede estar vacio").notEmpty().isMobilePhone(),
+    check("telefono", "telefono no puede estar vacio").notEmpty().isString(),
     check("cantidad", "cantidad no puede estar vacio").notEmpty().isNumeric(),
     check("nguiaTransporte", "nguiaTransporte no puede estar vacio").notEmpty(),
-    check("nloteComercial", "nloteComercial no puede estar vacio").notEmpty(),
+    check("valor", "valor no puede estar vacio").notEmpty(),
     validarCampos
   ], httpComprador.putComprador
 ),
