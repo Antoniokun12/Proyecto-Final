@@ -23,8 +23,8 @@ const httpMaquinarias = {
         }
     },
     getMaquinariasID: async (req, res) => {
-        const { _id } = req.params
-        const maquinaria = await Maquina_herramienta.findById(_id)
+        const { id } = req.params
+        const maquinaria = await Maquina_herramienta.findById(id)
         res.json({ maquinaria })
     },
 

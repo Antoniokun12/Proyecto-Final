@@ -19,7 +19,7 @@ router.post("/escribir", [
   check("horaFin", "horaFin no puede estar vacia").notEmpty(),
   check("diasTransplante", "diasTransplante no puede estar vacio").notEmpty().isString(),
   check("estadoFenologico", "estadoFenologico no puede estar vacio").notEmpty().isString(),
-  check("dosis", "dosis no puede estar vacio").notEmpty().isString(),
+  check("dosis", "dosis no puede estar vacio").notEmpty().isNumeric(),
   check("cantidadAgua", "cantidadAgua no puede estar vacio").notEmpty().isNumeric(),
     validarCampos
   ], httpRiegos.postRiegos),
@@ -28,11 +28,11 @@ router.put( "/modificar/:id", [
     check("id").custom(helpersRiego.validarExistaId),
     check('idCultivo').custom(helpersRiego.validaridCultivo),
     check('idEmpleado').custom(helpersRiego.validaridEmpleado),
-    check("horaFin", "horaFin debe ser una fecha").isISO8601().toDate(),
+    // check("horaFin", "horaFin debe ser una fecha").isISO8601().toDate(),
     check("horaFin", "horaFin no puede estar vacia").notEmpty(),
     check("diasTransplante", "diasTransplante no puede estar vacio").notEmpty().isString(),
     check("estadoFenologico", "estadoFenologico no puede estar vacio").notEmpty().isString(),
-    check("dosis", "dosis no puede estar vacio").notEmpty().isString(),
+    check("dosis", "dosis no puede estar vacio").notEmpty().isNumeric(),
     check("cantidadAgua", "cantidadAgua no puede estar vacio").notEmpty().isNumeric(),
     validarCampos
   ], httpRiegos.putRiegos

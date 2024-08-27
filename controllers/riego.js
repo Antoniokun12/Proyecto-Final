@@ -2,29 +2,19 @@ import Riego from "../models/riego.js";
 // import { json } from "express";
 // import cron from "node-cron"
 const httpRiegos = {
-    // getRiegos: async (req, res) => {
-    //     const {busqueda} = req.query
-    //     const riego = await Riego.find(
-    //         {
-    //             $or: [
-    //                 {nombre: new RegExp(busqueda, "i") }
-    //             ]
-    //         }
-    //     )
-    //     res.json({ riego})
-    // },
     getRiegos: async (req, res) => {
-        try {
-            const riego = await Riego.find();
-            res.json({ riego });
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ err: "Error al obtener riegos" });
-        }
+        const { busqueda } = req.query
+        const riego = await Riego.find(
+            {
+                $or: [
+                    { estadoFenologico: new RegExp(busqueda, "i") }
+                ]
+            }
+        )
+        res.json({ riego })
     },
-    
     getRiegosID: async (req, res) => {
-        const {_id} = req.params
+        const { _id } = req.params
         const riego = await Riego.findById(_id)
         res.json({ riego })
     },
@@ -40,17 +30,17 @@ const httpRiegos = {
 
     getRiegodesactivado: async (req, res) => {
         try {
-        const desactivados = await Riego.find({ estado: 0 })
-        res.json({ desactivados })
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Error al obtener Riego desactivado' });
-    }
+            const desactivados = await Riego.find({ estado: 0 })
+            res.json({ desactivados })
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Error al obtener Riego desactivado' });
+        }
     },
     postRiegos: async (req, res) => {
         try {
-            const {idCultivo,idEmpleado,diasTransplante,estadoFenologico,horaInicio, horaFin,dosis,cantidadAgua}=req.body
-            const riego= new Riego({idCultivo,idEmpleado,diasTransplante,estadoFenologico,horaInicio, horaFin,dosis,cantidadAgua});
+            const { idCultivo, idEmpleado, diasTransplante, estadoFenologico, horaInicio, horaFin, dosis, cantidadAgua } = req.body
+            const riego = new Riego({ idCultivo, idEmpleado, diasTransplante, estadoFenologico, horaInicio, horaFin, dosis, cantidadAgua });
             await riego.save()
             console.log(riego);
             res.json({ message: "el riego fue creado exitosamente ", riego });
@@ -59,22 +49,22 @@ const httpRiegos = {
             res.status(400).json({ error: "No se pudo crear el riego" })
         }
 
-    },  
-    putRiegos:async (req, res) => {
+    },
+    putRiegos: async (req, res) => {
         try {
             const { id } = req.params;
             const { _id, estado, ...resto } = req.body;
-        
+
             const riegoActualizado = await Riego.findByIdAndUpdate(id, resto, { new: true });
-        
+
             res.json({ riego: riegoActualizado });
-          } catch (error) {
+        } catch (error) {
 
             console.error("Error updating riego:", error);
             res.status(400).json({ error: error.message || "No se pudo actualizar el riego" });
-          }
+        }
     },
-    putRiegosActivar:async (req,res) => {
+    putRiegosActivar: async (req, res) => {
         const { id } = req.params;
         try {
             const riego = await Riego.findByIdAndUpdate(id, { estado: 1 }, { new: true });
@@ -87,7 +77,7 @@ const httpRiegos = {
             res.status(500).json({ error: "Error interno del servidor" });
         }
     },
-    putRiegosDesactivar:async (req,res) => {
+    putRiegosDesactivar: async (req, res) => {
         const { id } = req.params;
         try {
             const riego = await Riego.findByIdAndUpdate(id, { estado: 0 }, { new: true });

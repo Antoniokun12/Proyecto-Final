@@ -4,8 +4,8 @@ const mantenimientoSchema = new mongoose.Schema({
     // idGasto: {type: mongoose.Schema.Types.ObjectId, ref: 'Gasto', required: true},
     idMaquina: {type: mongoose.Schema.Types.ObjectId, ref: 'Maquina_herramienta', required: true},
     fecha: {type: Date, default:Date.now},
-    verificacionRealizada: {type: Boolean, required: true, default:true},
-    calibracion: {type: Boolean},
+    verificacionRealizada: {type: String, required: true, default:true},
+    calibracion: {type: String},
     responsable: {type: String, required: true},
     observaciones: {type: String, required: true}
 });
