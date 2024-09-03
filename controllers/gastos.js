@@ -24,8 +24,8 @@ const httpGastos = {
     },
     
     getGastosID: async (req, res) => {
-        const {_id} = req.params
-        const gasto = await Gasto.findById(_id)
+        const {id} = req.params
+        const gasto = await Gasto.findById(id)
         res.json({ gasto })
     },
     getGastoactivado: async (req, res) => {

@@ -1,30 +1,32 @@
 import Parcela from "../models/parcelas.js";
+import ContadorC from "../models/contadorc.js";
+
 // import { json } from "express";
 // import cron from "node-cron"
+
+const obtenerSiguienteCodigo = async () => {
+    const nombreContador = 'parcelas';
+    const contador = await ContadorC.findOneAndUpdate(
+        { nombre: nombreContador },
+        { $inc: { valor: 1 } },
+        { new: true, upsert: true }
+    );
+    return contador.valor;
+};
 const httpParcelas = {
-    // getParcelas: async (req, res) => {
-    //     const {busqueda} = req.query
-    //     const parcela = await Parcela.find(
-    //         {
-    //             $or: [
-    //                 {detalle: new RegExp(busqueda, "i") }
-    //             ]
-    //         }
-    //     )
-    //     res.json({ parcela})
-    // },
     getParcelas: async (req, res) => {
-        try {
-            const parcela = await Parcela.find();
-            res.json({ parcela });
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ err: "Error al obtener parcelas" });
-        }
+        const { busqueda } = req.query
+        const parcela = await Parcela.find(
+            {
+                $or: [
+                    { detalle: new RegExp(busqueda, "i") }
+                ]
+            }
+        )
+        res.json({ parcela })
     },
-    
     getParcelasID: async (req, res) => {
-        const {_id} = req.params
+        const { _id } = req.params
         const parcela = await Parcela.findById(_id)
         res.json({ parcela })
     },
@@ -40,18 +42,20 @@ const httpParcelas = {
 
     getParceladesactivado: async (req, res) => {
         try {
-        const desactivados = await Parcela.find({ estado: 0 })
-        res.json({ desactivados })
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Error al obtener Parcela desactivado' });
-    }
+            const desactivados = await Parcela.find({ estado: 0 })
+            res.json({ desactivados })
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Error al obtener Parcela desactivado' });
+        }
     },
-    
+
     postParcelas: async (req, res) => {
         try {
-            const {idFinca,ubicacionGeografica,numero,cultivoAnterior,cultivoActual,detalle,estado,area,asistenteTecnico}=req.body
-            const parcela = new Parcela({idFinca,ubicacionGeografica,numero,cultivoAnterior,cultivoActual,detalle,estado,area,asistenteTecnico});
+            const { idFinca, ubicacionGeografica, cultivoAnterior, cultivoActual, detalle, estado, area, asistenteTecnico } = req.body
+            const numero = await obtenerSiguienteCodigo();
+
+            const parcela = new Parcela({ idFinca, ubicacionGeografica, numero, cultivoAnterior, cultivoActual, detalle, estado, area, asistenteTecnico });
             await parcela.save()
             console.log(parcela);
             res.json({ message: "la parcela fue creada exitosamente ", parcela });
@@ -60,21 +64,21 @@ const httpParcelas = {
             res.status(400).json({ error: "No se pudo crear la parcela" })
         }
     },
-    putParcelas:async (req, res) => {
+    putParcelas: async (req, res) => {
         try {
             const { id } = req.params;
             const { _id, estado, ...resto } = req.body;
-        
+
             const parcelaActualizada = await Parcela.findByIdAndUpdate(id, resto, { new: true });
-        
+
             res.json({ parcela: parcelaActualizada });
-          } catch (error) {
+        } catch (error) {
 
             console.error("Error updating parcela:", error);
             res.status(400).json({ error: error.message || "No se pudo actualizar la parcela" });
-          }
+        }
     },
-    putParcelasActivar:async (req,res) => {
+    putParcelasActivar: async (req, res) => {
         const { id } = req.params;
         try {
             const controlplaga = await Parcela.findByIdAndUpdate(id, { estado: 1 }, { new: true });
@@ -87,7 +91,7 @@ const httpParcelas = {
             res.status(500).json({ error: "Error interno del servidor" });
         }
     },
-    putParcelasDesactivar:async (req,res) => {
+    putParcelasDesactivar: async (req, res) => {
         const { id } = req.params;
         try {
             const controlplaga = await Parcela.findByIdAndUpdate(id, { estado: 0 }, { new: true });
