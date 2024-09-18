@@ -15,7 +15,7 @@ const httpProduccion = {
     // },
     getProduccion: async (req, res) => {
         try {
-            const producciones = await Produccion.find();
+            const producciones = await Produccion.find().sort({ _id: -1 });
             res.json({ producciones });
         } catch (error) {
             console.error(error);
@@ -30,7 +30,7 @@ const httpProduccion = {
     },
     getProduccionactivado: async (req, res) => {
         try {
-            const activados = await Produccion.find({ estado: 1 });
+            const activados = await Produccion.find({ estado: 1 }).sort({ _id: -1 });
             res.json({ activados });
         } catch (error) {
             console.error(error);
@@ -40,7 +40,7 @@ const httpProduccion = {
 
     getProducciondesactivado: async (req, res) => {
         try {
-        const desactivados = await Produccion.find({ estado: 0 })
+        const desactivados = await Produccion.find({ estado: 0 }).sort({ _id: -1 });
         res.json({ desactivados })
     } catch (error) {
         console.error(error);

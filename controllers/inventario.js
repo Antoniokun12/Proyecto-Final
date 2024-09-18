@@ -15,7 +15,7 @@ const httpInventarios = {
     // },
     getInventarios: async (req, res) => {
         try {
-            const inventario = await Inventario.find({});
+            const inventario = await Inventario.find({}).sort({ _id: -1 });
             res.json({ inventario });
         } catch (error) {
             console.error(error);
@@ -29,7 +29,7 @@ const httpInventarios = {
     },
     getInventarioactivado: async (req, res) => {
         try {
-            const activados = await Inventario.find({ estado: 1 });
+            const activados = await Inventario.find({ estado: 1 }).sort({ _id: -1 });
             res.json({ activados });
         } catch (error) {
             console.error(error);
@@ -39,7 +39,7 @@ const httpInventarios = {
 
     getInventariodesactivado: async (req, res) => {
         try {
-        const desactivados = await Inventario.find({ estado: 0 })
+        const desactivados = await Inventario.find({ estado: 0 }).sort({ _id: -1 });
         res.json({ desactivados })
     } catch (error) {
         console.error(error);

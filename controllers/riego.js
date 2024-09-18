@@ -10,7 +10,7 @@ const httpRiegos = {
                     { estadoFenologico: new RegExp(busqueda, "i") }
                 ]
             }
-        )
+        ).sort({ _id: -1 });
         res.json({ riego })
     },
     getRiegosID: async (req, res) => {
@@ -20,7 +20,7 @@ const httpRiegos = {
     },
     getRiegoactivado: async (req, res) => {
         try {
-            const activados = await Riego.find({ estado: 1 });
+            const activados = await Riego.find({ estado: 1 }).sort({ _id: -1 });
             res.json({ activados });
         } catch (error) {
             console.error(error);
@@ -30,7 +30,7 @@ const httpRiegos = {
 
     getRiegodesactivado: async (req, res) => {
         try {
-            const desactivados = await Riego.find({ estado: 0 })
+            const desactivados = await Riego.find({ estado: 0 }).sort({ _id: -1 });
             res.json({ desactivados })
         } catch (error) {
             console.error(error);

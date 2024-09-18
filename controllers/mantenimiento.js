@@ -15,7 +15,7 @@ const httpMantenimientos = {
     // },
     getMantenimientos: async (req, res) => {
         try {
-            const mantenimiento = await Mantenimiento.find();
+            const mantenimiento = await Mantenimiento.find().sort({ _id: -1 });
             res.json({ mantenimiento });
         } catch (error) {
             console.error(error);

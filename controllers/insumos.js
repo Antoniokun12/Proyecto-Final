@@ -15,7 +15,7 @@ const httpInsumos = {
     // },
     getInsumos: async (req, res) => {
         try {
-            const insumos = await Insumo.find({});
+            const insumos = await Insumo.find({}).sort({ _id: -1 });
             res.json({ insumos });
         } catch (error) {
             console.error(error);
@@ -29,7 +29,7 @@ const httpInsumos = {
     },
     getInsumoactivado: async (req, res) => {
         try {
-            const activados = await Insumo.find({ estado: 1 });
+            const activados = await Insumo.find({ estado: 1 }).sort({ _id: -1 });
             res.json({ activados });
         } catch (error) {
             console.error(error);
@@ -39,7 +39,7 @@ const httpInsumos = {
 
     getInsumodesactivado: async (req, res) => {
         try {
-        const desactivados = await Insumo.find({ estado: 0 })
+        const desactivados = await Insumo.find({ estado: 0 }).sort({ _id: -1 });
         res.json({ desactivados })
     } catch (error) {
         console.error(error);

@@ -16,7 +16,7 @@ const httpControlPlaga = {
     getControlPlaga: async (req, res) => {
         try {
             // Obtener todos los registros de control de plagas sin ningún filtro
-            const controlplaga = await ControlPlaga.find();
+            const controlplaga = await ControlPlaga.find().sort({ _id: -1 });
             res.json({ controlplaga });
         } catch (error) {
             console.error(error);
@@ -31,7 +31,7 @@ const httpControlPlaga = {
     },
     getControlPlagaactivado: async (req, res) => {
         try {
-            const activados = await ControlPlaga.find({ estado: 1 });
+            const activados = await ControlPlaga.find({ estado: 1 }).sort({ _id: -1 });
             res.json({ activados });
         } catch (error) {
             console.error(error);
@@ -41,7 +41,7 @@ const httpControlPlaga = {
 
     getControlPlagadesactivado: async (req, res) => {
         try {
-        const desactivados = await ControlPlaga.find({ estado: 0 })
+        const desactivados = await ControlPlaga.find({ estado: 0 }).sort({ _id: -1 });
         res.json({ desactivados })
     } catch (error) {
         console.error(error);

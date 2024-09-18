@@ -17,7 +17,7 @@ const httpAnalisisSuelo = {
     getAnalisis: async (req, res) => {
         try {
             // Obtener todos los análisis sin ningún filtro
-            const analisis = await Analisis.find();
+            const analisis = await Analisis.find().sort({ _id: -1 });
             res.json({ analisis });
         } catch (error) {
             console.error(error);
@@ -32,7 +32,7 @@ const httpAnalisisSuelo = {
     },
     getAnalisisactivado: async (req, res) => {
         try {
-            const activados = await Analisis.find({ estado: 1 });
+            const activados = await Analisis.find({ estado: 1 }).sort({ _id: -1 });
             res.json({ activados });
         } catch (error) {
             console.error(error);
@@ -42,7 +42,7 @@ const httpAnalisisSuelo = {
 
     getAnalisisdesactivado: async (req, res) => {
         try {
-        const desactivados = await Analisis.find({ estado: 0 })
+        const desactivados = await Analisis.find({ estado: 0 }).sort({ _id: -1 });
         res.json({ desactivados })
     } catch (error) {
         console.error(error);

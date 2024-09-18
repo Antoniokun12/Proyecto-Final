@@ -4,7 +4,7 @@ import Proveedor from "../models/proveedores.js";
 const httpProveedores = {
     getProveedores: async (req, res) => {
         try {
-            const proveedores = await Proveedor.find();
+            const proveedores = await Proveedor.find().sort({ _id: -1 });
             res.json({ proveedores });
         } catch (error) {
             console.error("Error al obtener proveedores:", error);
@@ -19,7 +19,7 @@ const httpProveedores = {
     },
     getProveedoractivado: async (req, res) => {
         try {
-            const activados = await Proveedor.find({ estado: 1 });
+            const activados = await Proveedor.find({ estado: 1 }).sort({ _id: -1 });
             res.json({ activados });
         } catch (error) {
             console.error(error);
@@ -29,7 +29,7 @@ const httpProveedores = {
 
     getProveedordesactivado: async (req, res) => {
         try {
-            const desactivados = await Proveedor.find({ estado: 0 })
+            const desactivados = await Proveedor.find({ estado: 0 }).sort({ _id: -1 });
             res.json({ desactivados })
         } catch (error) {
             console.error(error);

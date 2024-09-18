@@ -22,7 +22,7 @@ const httpParcelas = {
                     { detalle: new RegExp(busqueda, "i") }
                 ]
             }
-        )
+        ).sort({ _id: -1 });
         res.json({ parcela })
     },
     getParcelasID: async (req, res) => {
@@ -32,7 +32,7 @@ const httpParcelas = {
     },
     getParcelaactivado: async (req, res) => {
         try {
-            const activados = await Parcela.find({ estado: 1 });
+            const activados = await Parcela.find({ estado: 1 }).sort({ _id: -1 });
             res.json({ activados });
         } catch (error) {
             console.error(error);
@@ -42,7 +42,7 @@ const httpParcelas = {
 
     getParceladesactivado: async (req, res) => {
         try {
-            const desactivados = await Parcela.find({ estado: 0 })
+            const desactivados = await Parcela.find({ estado: 0 }).sort({ _id: -1 });
             res.json({ desactivados })
         } catch (error) {
             console.error(error);

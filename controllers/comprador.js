@@ -16,7 +16,7 @@ const httpComprador = {
     getComprador: async (req, res) => {
         try {
             // Obtener todos los compradores sin ningún filtro
-            const comprador = await Comprador.find();
+            const comprador = await Comprador.find().sort({ _id: -1 });
             res.json({ comprador });
         } catch (error) {
             console.error(error);
@@ -31,7 +31,7 @@ const httpComprador = {
     },
     getCompradoractivado: async (req, res) => {
         try {
-            const activados = await Comprador.find({ estado: 1 });
+            const activados = await Comprador.find({ estado: 1 }).sort({ _id: -1 });
             res.json({ activados });
         } catch (error) {
             console.error(error);
@@ -41,7 +41,7 @@ const httpComprador = {
 
     getCompradordesactivado: async (req, res) => {
         try {
-        const desactivados = await Comprador.find({ estado: 0 })
+        const desactivados = await Comprador.find({ estado: 0 }).sort({ _id: -1 });
         res.json({ desactivados })
     } catch (error) {
         console.error(error);

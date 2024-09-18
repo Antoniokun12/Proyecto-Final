@@ -15,7 +15,7 @@ const httpGastos = {
     // },
     getGastos: async (req, res) => {
         try {
-            const gasto = await Gasto.find();
+            const gasto = await Gasto.find().sort({ _id: -1 });
             res.json({ gasto });
         } catch (error) {
             console.error(error);
@@ -30,7 +30,7 @@ const httpGastos = {
     },
     getGastoactivado: async (req, res) => {
         try {
-            const activados = await Gasto.find({ estado: 1 });
+            const activados = await Gasto.find({ estado: 1 }).sort({ _id: -1 });
             res.json({ activados });
         } catch (error) {
             console.error(error);
@@ -40,7 +40,7 @@ const httpGastos = {
 
     getGastodesactivado: async (req, res) => {
         try {
-        const desactivados = await Gasto.find({ estado: 0 })
+        const desactivados = await Gasto.find({ estado: 0 }).sort({ _id: -1 });
         res.json({ desactivados })
     } catch (error) {
         console.error(error);

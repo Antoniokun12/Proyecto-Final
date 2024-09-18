@@ -4,7 +4,7 @@ import Nomina from "../models/nomina.js";
 const httpNominas = {
     getNominas: async (req, res) => {
         try {
-            const nomina = await Nomina.find(); 
+            const nomina = await Nomina.find().sort({ _id: -1 });
             res.json({ nomina });
         } catch (error) {
             res.status(500).json({ message: "Error al obtener las nóminas", error });
@@ -18,7 +18,7 @@ const httpNominas = {
     },
     getNominaactivado: async (req, res) => {
         try {
-            const activados = await Nomina.find({ estado: 1 });
+            const activados = await Nomina.find({ estado: 1 }).sort({ _id: -1 });
             res.json({ activados });
         } catch (error) {
             console.error(error);
@@ -28,7 +28,7 @@ const httpNominas = {
 
     getNominadesactivado: async (req, res) => {
         try {
-        const desactivados = await Nomina.find({ estado: 0 })
+        const desactivados = await Nomina.find({ estado: 0 }).sort({ _id: -1 });
         res.json({ desactivados })
     } catch (error) {
         console.error(error);

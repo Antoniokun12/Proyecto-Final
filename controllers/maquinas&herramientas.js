@@ -15,7 +15,7 @@ const httpMaquinarias = {
     // },
     getMaquinarias: async (req, res) => {
         try {
-            const maquina = await Maquina_herramienta.find({});
+            const maquina = await Maquina_herramienta.find({}).sort({ _id: -1 });
             res.json({ maquina });
         } catch (error) {
             console.error(error);
@@ -30,7 +30,7 @@ const httpMaquinarias = {
 
     getMaquina_herramientaactivado: async (req, res) => {
         try {
-            const activados = await Maquina_herramienta.find({ estado: 1 });
+            const activados = await Maquina_herramienta.find({ estado: 1 }).sort({ _id: -1 });
             res.json({ activados });
         } catch (error) {
             console.error(error);
@@ -40,7 +40,7 @@ const httpMaquinarias = {
 
     getMaquina_herramientadesactivado: async (req, res) => {
         try {
-            const desactivados = await Maquina_herramienta.find({ estado: 0 })
+            const desactivados = await Maquina_herramienta.find({ estado: 0 }).sort({ _id: -1 });
             res.json({ desactivados })
         } catch (error) {
             console.error(error);

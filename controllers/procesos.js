@@ -15,7 +15,7 @@ const httpProcesos = {
     // },
     getProcesos: async (req, res) => {
         try {
-            const proceso = await Proceso.find();
+            const proceso = await Proceso.find().sort({ _id: -1 });
             res.json({ proceso });
         } catch (error) {
             console.error(error);
@@ -30,7 +30,7 @@ const httpProcesos = {
     },
     getProcesoactivado: async (req, res) => {
         try {
-            const activados = await Proceso.find({ estado: 1 });
+            const activados = await Proceso.find({ estado: 1 }).sort({ _id: -1 });
             res.json({ activados });
         } catch (error) {
             console.error(error);
@@ -40,7 +40,7 @@ const httpProcesos = {
 
     getProcesodesactivado: async (req, res) => {
         try {
-        const desactivados = await Proceso.find({ estado: 0 })
+        const desactivados = await Proceso.find({ estado: 0 }).sort({ _id: -1 });
         res.json({ desactivados })
     } catch (error) {
         console.error(error);

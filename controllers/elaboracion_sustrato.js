@@ -16,7 +16,7 @@ const httpElaboracionSustrato = {
     getSustrato: async (req, res) => {
         try {
             // Obtener todos los sustratos sin ningún filtro
-            const sustra = await Sustrato.find();
+            const sustra = await Sustrato.find().sort({ _id: -1 });
             res.json({ sustra });
         } catch (error) {
             console.error(error);
@@ -31,7 +31,7 @@ const httpElaboracionSustrato = {
     },
     getSustratoactivado: async (req, res) => {
         try {
-            const activados = await Sustrato.find({ estado: 1 });
+            const activados = await Sustrato.find({ estado: 1 }).sort({ _id: -1 });
             res.json({ activados });
         } catch (error) {
             console.error(error);
@@ -41,7 +41,7 @@ const httpElaboracionSustrato = {
 
     getSustratodesactivado: async (req, res) => {
         try {
-        const desactivados = await Sustrato.find({ estado: 0 })
+        const desactivados = await Sustrato.find({ estado: 0 }).sort({ _id: -1 });
         res.json({ desactivados })
     } catch (error) {
         console.error(error);

@@ -16,7 +16,7 @@ const httpCultivo = {
     getCultivo: async (req, res) => {
         try {
             // Obtener todos los cultivos sin ningún filtro
-            const cultivos = await Cultivo.find();
+            const cultivos = await Cultivo.find().sort({ _id: -1 });
             res.json({ cultivos });
         } catch (error) {
             console.error(error);
@@ -31,7 +31,7 @@ const httpCultivo = {
     },
     getCultivoactivado: async (req, res) => {
         try {
-            const activados = await Cultivo.find({ estado: 1 });
+            const activados = await Cultivo.find({ estado: 1 }).sort({ _id: -1 });
             res.json({ activados });
         } catch (error) {
             console.error(error);
@@ -41,7 +41,7 @@ const httpCultivo = {
 
     getCultivodesactivado: async (req, res) => {
         try {
-        const desactivados = await Cultivo.find({ estado: 0 })
+        const desactivados = await Cultivo.find({ estado: 0 }).sort({ _id: -1 });
         res.json({ desactivados })
     } catch (error) {
         console.error(error);

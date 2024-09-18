@@ -16,7 +16,7 @@ const httpFertilizacion = {
     // },
     getFertilizacion: async (req, res) => {
         try {
-            const fertilizacion = await Fertilizacion.find();
+            const fertilizacion = await Fertilizacion.find().sort({ _id: -1 });
             res.json({ fertilizacion });
         } catch (error) {
             console.error(error);
@@ -39,7 +39,7 @@ const httpFertilizacion = {
     },
     getFertilizacionactivado: async (req, res) => {
         try {
-            const activados = await Fertilizacion.find({ estado: 1 });
+            const activados = await Fertilizacion.find({ estado: 1 }).sort({ _id: -1 });
             res.json({ activados });
         } catch (error) {
             console.error(error);
@@ -49,7 +49,7 @@ const httpFertilizacion = {
 
     getFertilizaciondesactivado: async (req, res) => {
         try {
-        const desactivados = await Fertilizacion.find({ estado: 0 })
+        const desactivados = await Fertilizacion.find({ estado: 0 }).sort({ _id: -1 });
         res.json({ desactivados })
     } catch (error) {
         console.error(error);

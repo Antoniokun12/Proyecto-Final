@@ -16,7 +16,7 @@ const httpClima = {
     getClima: async (req, res) => {
         try {
             // Obtener todos los registros de clima sin ningún filtro
-            const clima = await Clima.find();
+            const clima = await Clima.find().sort({ _id: -1 });
             res.json({ clima });
         } catch (error) {
             console.error(error);

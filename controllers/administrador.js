@@ -18,7 +18,7 @@ const httpAdministrador = {
     getAdmin: async (req, res) => {
         try {
             // Obtener todos los administradores sin ningún filtro
-            const admin = await Administrador.find();
+            const admin = await Administrador.find().sort({ _id: -1 });
             res.json({ admin });
         } catch (error) {
             console.log(error);
@@ -42,7 +42,7 @@ const httpAdministrador = {
     },
     getAdministradoractivado: async (req, res) => {
         try {
-            const activados = await Administrador.find({ estado: 1 });
+            const activados = await Administrador.find({ estado: 1 }).sort({ _id: -1 });
             res.json({ activados });
         } catch (error) {
             console.error(error);
@@ -52,7 +52,7 @@ const httpAdministrador = {
 
     getAdministradordesactivado: async (req, res) => {
         try {
-        const desactivados = await Administrador.find({ estado: 0 })
+        const desactivados = await Administrador.find({ estado: 0 }).sort({ _id: -1 });
         res.json({ desactivados })
     } catch (error) {
         console.error(error);

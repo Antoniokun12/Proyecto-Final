@@ -4,7 +4,7 @@ import Semilla from "../models/semillas.js";
 const httpSemillas = {
     getSemillas: async (req, res) => {
         try {
-            const semillas = await Semilla.find({});
+            const semillas = await Semilla.find({}).sort({ _id: -1 });
             res.json({ semillas });
         } catch (error) {
             console.error(error);
@@ -19,7 +19,7 @@ const httpSemillas = {
     },
     getSemillasactivado: async (req, res) => {
         try {
-            const activados = await Semilla.find({ estado: 1 });
+            const activados = await Semilla.find({ estado: 1 }).sort({ _id: -1 });
             res.json({ activados });
         } catch (error) {
             console.error(error);
@@ -29,7 +29,7 @@ const httpSemillas = {
 
     getSemillasdesactivado: async (req, res) => {
         try {
-        const desactivados = await Semilla.find({ estado: 0 })
+        const desactivados = await Semilla.find({ estado: 0 }).sort({ _id: -1 });
         res.json({ desactivados })
     } catch (error) {
         console.error(error);

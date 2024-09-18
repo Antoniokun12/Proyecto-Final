@@ -16,5 +16,4 @@ const facturaSchema = new mongoose.Schema({
         ]
     })
     
-    
 export default mongoose.model("Factura",facturaSchema)

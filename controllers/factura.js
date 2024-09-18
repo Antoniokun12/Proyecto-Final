@@ -15,7 +15,7 @@ const httpFacturas = {
     // },
     getFacturas: async (req, res) => {
       try {
-          const factura = await Factura.find();
+          const factura = await Factura.find().sort({ _id: -1 });
           res.json({ factura });
       } catch (error) {
           console.error(error);
@@ -30,7 +30,7 @@ const httpFacturas = {
     },
     getFacturaactivado: async (req, res) => {
       try {
-          const activados = await Factura.find({ estado: 1 });
+          const activados = await Factura.find({ estado: 1 }).sort({ _id: -1 });
           res.json({ activados });
       } catch (error) {
           console.error(error);
@@ -40,7 +40,7 @@ const httpFacturas = {
 
   getFacturadesactivado: async (req, res) => {
       try {
-      const desactivados = await Factura.find({ estado: 0 })
+      const desactivados = await Factura.find({ estado: 0 }).sort({ _id: -1 });
       res.json({ desactivados })
   } catch (error) {
       console.error(error);

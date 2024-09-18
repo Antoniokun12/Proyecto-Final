@@ -15,7 +15,7 @@ const httpPreparaciones = {
     // },
     getPreparaciones: async (req, res) => {
         try {
-            const preparacion = await Suelo.find();
+            const preparacion = await Suelo.find().sort({ _id: -1 });
             res.json({ preparacion });
         } catch (error) {
             console.error(error);
@@ -30,7 +30,7 @@ const httpPreparaciones = {
     },
     getSueloactivado: async (req, res) => {
         try {
-            const activados = await Suelo.find({ estado: 1 });
+            const activados = await Suelo.find({ estado: 1 }).sort({ _id: -1 });
             res.json({ activados });
         } catch (error) {
             console.error(error);
@@ -40,7 +40,7 @@ const httpPreparaciones = {
 
     getSuelodesactivado: async (req, res) => {
         try {
-        const desactivados = await Suelo.find({ estado: 0 })
+        const desactivados = await Suelo.find({ estado: 0 }).sort({ _id: -1 });
         res.json({ desactivados })
     } catch (error) {
         console.error(error);

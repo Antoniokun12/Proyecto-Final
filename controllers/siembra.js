@@ -15,7 +15,7 @@ const httpSiembras= {
     // },
     getSiembras: async (req, res) => {
         try {
-            const siembra = await Siembra.find();
+            const siembra = await Siembra.find().sort({ _id: -1 });
             res.json({ siembra });
         } catch (error) {
             console.error(error);
@@ -31,7 +31,7 @@ const httpSiembras= {
 
     getSiembraactivado: async (req, res) => {
         try {
-            const activados = await Siembra.find({ estado: 1 });
+            const activados = await Siembra.find({ estado: 1 }).sort({ _id: -1 });
             res.json({ activados });
         } catch (error) {
             console.error(error);
@@ -40,7 +40,7 @@ const httpSiembras= {
     },
     getSiembradesactivado: async (req, res) => {
         try {
-        const desactivados = await Siembra.find({ estado: 0 })
+        const desactivados = await Siembra.find({ estado: 0 }).sort({ _id: -1 });
         res.json({ desactivados })
     } catch (error) {
         console.error(error);

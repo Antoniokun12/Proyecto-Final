@@ -4,7 +4,7 @@ import Empleado from "../models/empleados.js";
 const httpEmpleados = {
     getEmpleados: async (req, res) => {
         try {
-            const empleados = await Empleado.find(); // Trae todos los empleados
+            const empleados = await Empleado.find().sort({ _id: -1 }); // Trae todos los empleados
             res.json({ empleados });
         } catch (error) {
             console.error("Error al obtener empleados:", error);
@@ -19,7 +19,7 @@ const httpEmpleados = {
     },
     getEmpleadoactivado: async (req, res) => {
         try {
-            const activados = await Empleado.find({ estado: 1 });
+            const activados = await Empleado.find({ estado: 1 }).sort({ _id: -1 });
             res.json({ activados });
         } catch (error) {
             console.error(error);
@@ -29,7 +29,7 @@ const httpEmpleados = {
 
     getEmpleadodesactivado: async (req, res) => {
         try {
-            const desactivados = await Empleado.find({ estado: 0 })
+            const desactivados = await Empleado.find({ estado: 0 }).sort({ _id: -1 });
             res.json({ desactivados })
         } catch (error) {
             console.error(error);

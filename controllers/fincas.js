@@ -15,7 +15,7 @@ const httpFincas = {
     // },
     getFincas: async (req, res) => {
         try {
-            const finca = await Finca.find();
+            const finca = await Finca.find().sort({ _id: -1 });
             res.json({ finca });
         } catch (error) {
             console.error(error);
@@ -30,7 +30,7 @@ const httpFincas = {
     },
     getFincaactivado: async (req, res) => {
         try {
-            const activados = await Finca.find({ estado: 1 });
+            const activados = await Finca.find({ estado: 1 }).sort({ _id: -1 });
             res.json({ activados });
         } catch (error) {
             console.error(error);
@@ -40,7 +40,7 @@ const httpFincas = {
 
     getFincadesactivado: async (req, res) => {
         try {
-        const desactivados = await Finca.find({ estado: 0 })
+        const desactivados = await Finca.find({ estado: 0 }).sort({ _id: -1 });
         res.json({ desactivados })
     } catch (error) {
         console.error(error);
