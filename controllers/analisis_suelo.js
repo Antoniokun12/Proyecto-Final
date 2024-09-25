@@ -1,4 +1,6 @@
 import Analisis from "../models/analisis_suelo.js";
+import Parcela from "../models/parcelas.js";
+
 // import { json } from "express";
 // import cron from "node-cron"
 const httpAnalisisSuelo = {
@@ -25,6 +27,24 @@ const httpAnalisisSuelo = {
         }
     },
     
+    getAnalisisSueloByFinca: async (req, res) => {
+        try {
+            const { idFinca } = req.params;
+
+            const parcelas = await Parcela.find({ idFinca }).select('_id');
+
+            const idsParcelas = parcelas.map(parcela => parcela._id);
+
+            const analisisSuelo = await Analisis.find({ idParcela: { $in: idsParcelas } })
+
+            res.status(200).json(analisisSuelo);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Error al obtener los análisis de suelo' });
+        }
+    },
+
+    
     getAnalisisID: async (req, res) => {
         const {id} = req.params
         const analisis = await Analisis.findById(id)
@@ -49,6 +69,7 @@ const httpAnalisisSuelo = {
         res.status(500).json({ error: 'Error al obtener Analisis desactivado' });
     }
     },
+
     postAnalisis: async (req, res) => {
         try {
             const {idParcela,idEmpleado,muestra,cultivo,laboratorio,resultados,recomendaciones}=req.body;

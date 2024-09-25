@@ -1,4 +1,10 @@
 import Factura from "../models/factura.js";
+import Parcela from "../models/parcelas.js";
+import Cultivo from "../models/cultivos.js";
+import Produccion from "../models/produccion.js";
+import Comprador from "../models/comprador.js";
+
+
 // import { json } from "express";
 // import cron from "node-cron"
 const httpFacturas = {
@@ -22,6 +28,39 @@ const httpFacturas = {
           res.status(500).json({ err: "Error al obtener facturas" });
       }
   },
+
+getFacturasByFinca: async (req, res) => {
+    try {
+        const { idFinca } = req.params; 
+
+        // 1. Obtener las parcelas asociadas a la finca
+        const parcelas = await Parcela.find({ idFinca }).select('_id');
+        const idsParcelas = parcelas.map(parcela => parcela._id);
+
+        // 2. Obtener los cultivos asociados a esas parcelas
+        const cultivos = await Cultivo.find({ idParcela: { $in: idsParcelas } }).select('_id');
+        const idsCultivos = cultivos.map(cultivo => cultivo._id);
+
+        // 3. Obtener las producciones asociadas a esos cultivos
+        const producciones = await Produccion.find({ idCultivo: { $in: idsCultivos } }).select('_id');
+        const idsProducciones = producciones.map(produccion => produccion._id);
+
+        // 4. Obtener los compradores asociados a esas producciones
+        const compradores = await Comprador.find({ idProduccion: { $in: idsProducciones } }).select('_id');
+        const idsCompradores = compradores.map(comprador => comprador._id);
+
+        // 5. Obtener las facturas asociadas a esos compradores
+        const facturas = await Factura.find({ idComprador: { $in: idsCompradores } })
+            .sort({ _id: -1 })
+            // .populate('idComprador'); // Si deseas obtener más información del comprador
+
+        // 6. Enviar la respuesta con las facturas encontradas
+        res.status(200).json({ facturas });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ err: "Error al obtener facturas" });
+    }
+},
   
     getFacturasID: async (req, res) => {
         const {_id} = req.params

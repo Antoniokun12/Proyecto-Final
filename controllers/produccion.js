@@ -1,4 +1,7 @@
 import Produccion from "../models/produccion.js";
+import Parcela from "../models/parcelas.js";
+import Cultivo from "../models/cultivos.js";
+
 // import { json } from "express";
 // import cron from "node-cron"
 const httpProduccion = {
@@ -20,6 +23,25 @@ const httpProduccion = {
         } catch (error) {
             console.error(error);
             res.status(500).json({ err: "Error al obtener producciones" });
+        }
+    },
+
+getProduccionesByFinca: async (req, res) => {
+        try {
+            const { idFinca } = req.params; 
+
+            const parcelas = await Parcela.find({ idFinca }).select('_id');
+            const idsParcelas = parcelas.map(parcela => parcela._id);
+
+            const cultivos = await Cultivo.find({ idParcela: { $in: idsParcelas } }).select('_id');
+            const idsCultivos = cultivos.map(cultivo => cultivo._id);
+    
+            const producciones = await Produccion.find({ idCultivo: { $in: idsCultivos } }).sort({ _id: -1 });
+    
+            res.json({ producciones });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ err: "Error al obtener producciones", error });
         }
     },
     

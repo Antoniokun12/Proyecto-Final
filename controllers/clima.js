@@ -23,6 +23,20 @@ const httpClima = {
             res.status(500).json({ err: "Error al obtener registros de clima" });
         }
     },
+    getClimaByFinca: async (req, res) => {
+        try {
+            const { idFinca } = req.params; // Suponiendo que idFinca viene en los parámetros de la URL
+    
+            // Obtener los registros de clima que pertenezcan a la finca especificada
+            const clima = await Clima.find({ idFinca }).sort({ _id: -1 });
+    
+            // Enviar la respuesta con los registros de clima encontrados
+            res.status(200).json({ clima });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ err: "Error al obtener registros de clima" });
+        }
+    },
 
     getClimaID: async (req, res) => {
         const { _id } = req.params

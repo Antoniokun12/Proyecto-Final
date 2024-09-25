@@ -9,6 +9,7 @@ import { validarJWT } from '../middlewares/validar-jwt.js';
 const router = Router();
 
 router.get("/listar",[validarJWT],httpClima.getClima);
+router.get("/listarporfinca/:idFinca", httpClima.getClimaByFinca);
 router.get("/listarid/:id", httpClima.getClimaID);
 router.post("/escribir", [
   check('idFinca').custom(helpersClima.validaridFinca),

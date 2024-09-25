@@ -12,6 +12,19 @@ const httpProveedores = {
         }
     },
 
+ getProveedoresByFinca: async (req, res) => {
+        try {
+            const { idFinca } = req.params; 
+    
+            const proveedores = await Proveedor.find({ idFinca }).sort({ _id: -1 });
+    
+            res.json({ proveedores });
+        } catch (error) {
+            console.error("Error al obtener proveedores:", error);
+            res.status(500).json({ error: "Error al obtener proveedores" });
+        }
+    },
+
     getProveedoresID: async (req, res) => {
         const { id } = req.params
         const proveedor = await Proveedor.findById(id)
@@ -38,8 +51,8 @@ const httpProveedores = {
     },
     postProveedores: async (req, res) => {
         try {
-            const { nombre, direccion, telefono, email } = req.body
-            const proveedor = new Proveedor({ nombre, direccion, telefono, email });
+            const { idFinca,nombre, direccion, telefono, email } = req.body
+            const proveedor = new Proveedor({ idFinca,nombre, direccion, telefono, email });
             await proveedor.save()
             console.log(proveedor);
             res.json({ message: "el proveedor fue creado exitosamente ", proveedor });

@@ -25,6 +25,20 @@ const httpParcelas = {
         ).sort({ _id: -1 });
         res.json({ parcela })
     },
+
+   getParcelasByFinca: async (req, res) => {
+        try {
+            const { idFinca } = req.query;
+
+            const parcelas = await Parcela.find({ idFinca }).sort({ _id: -1 });
+
+            res.json({ parcelas });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: "Error al obtener parcelas", error });
+        }
+    },
+
     getParcelasID: async (req, res) => {
         const { _id } = req.params
         const parcela = await Parcela.findById(_id)

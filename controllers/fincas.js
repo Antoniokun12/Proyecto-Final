@@ -13,6 +13,7 @@ const httpFincas = {
     //     )
     //     res.json({ finca })
     // },
+
     getFincas: async (req, res) => {
         try {
             const finca = await Finca.find().sort({ _id: -1 });
@@ -28,6 +29,7 @@ const httpFincas = {
         const finca = await Finca.findById(_id)
         res.json({ finca })
     },
+    
     getFincaactivado: async (req, res) => {
         try {
             const activados = await Finca.find({ estado: 1 }).sort({ _id: -1 });

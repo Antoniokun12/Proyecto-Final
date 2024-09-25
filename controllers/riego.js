@@ -1,4 +1,7 @@
 import Riego from "../models/riego.js";
+import Parcela from "../models/parcelas.js";
+import Cultivo from "../models/cultivos.js";
+
 // import { json } from "express";
 // import cron from "node-cron"
 const httpRiegos = {
@@ -13,6 +16,30 @@ const httpRiegos = {
         ).sort({ _id: -1 });
         res.json({ riego })
     },
+
+getRiegosByFinca: async (req, res) => {
+        try {
+            const { idFinca } = req.params; // Se espera que idFinca venga en los parámetros de la URL
+    
+            // 1. Buscar las parcelas asociadas a la finca
+            const parcelas = await Parcela.find({ idFinca }).select('_id');
+            const idsParcelas = parcelas.map(parcela => parcela._id);
+    
+            // 2. Buscar los cultivos asociados a esas parcelas
+            const cultivos = await Cultivo.find({ idParcela: { $in: idsParcelas } }).select('_id');
+            const idsCultivos = cultivos.map(cultivo => cultivo._id);
+    
+            // 3. Buscar los riegos asociados a esos cultivos
+            const riegos = await Riego.find({ idCultivo: { $in: idsCultivos } }).sort({ _id: -1 });
+    
+            // 4. Enviar la respuesta con los riegos encontrados
+            res.json({ riegos });
+        } catch (error) {
+            console.error("Error al obtener riegos:", error);
+            res.status(500).json({ error: "Error al obtener riegos" });
+        }
+    },
+
     getRiegosID: async (req, res) => {
         const { _id } = req.params
         const riego = await Riego.findById(_id)

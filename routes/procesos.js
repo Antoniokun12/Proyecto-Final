@@ -9,6 +9,7 @@ import { check } from "express-validator";
 const router = Router();
 
 router.get("/listar",[validarJWT],httpProcesos.getProcesos);
+router.get("/listarporfinca/:idFinca", httpProcesos.getProcesosByFinca);
 router.get("/listarid/:id", httpProcesos.getProcesosID);
 router.get("/listaractivados",httpProcesos.getProcesoactivado)
 router.get("/listardesactivados",httpProcesos.getProcesodesactivado)
