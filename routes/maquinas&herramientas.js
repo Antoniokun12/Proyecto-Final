@@ -38,6 +38,30 @@ router.put( "/modificar/:id", [
     validarCampos
   ], httpMaquinarias.putMaquinarias
 ),
+router.put("/agregamantenimiento/:id", [
+  check('id', 'Se necesita un mongoid válido').isMongoId(),
+  check('id').custom(helpersMaquinaria.validarExistaId),
+  validarCampos
+], httpMaquinarias.putAgregarMantenimiento);
+
+router.put("/editamantenimiento/:id/:mantenimientoId", [
+  check('id', 'Se necesita un mongoid válido').isMongoId(),
+  check('id').custom(helpersMaquinaria.validarExistaId),
+  validarCampos
+], httpMaquinarias.putEditarMantenimiento);
+
+router.put("/desinfeccion/:id", [
+  check('id', 'Se necesita un mongoid válido').isMongoId(),
+  check('id').custom(helpersMaquinaria.validarExistaId),
+  validarCampos
+], httpMaquinarias.putAgregarProductoDesinfeccion);
+
+router.put("/editardesinfeccion/:id/desinfeccion/:desinfeccionId/producto/:productoId", [
+  check('id', 'Se necesita un mongoid válido').isMongoId(),
+  check('id').custom(helpersMaquinaria.validarExistaId),
+  validarCampos
+], httpMaquinarias.putEditarProductoDesinfeccion);
+
 router.put("/activar/:id", [
     check("id", "Se necesita un mongoId valido").isMongoId(),
     check("id").custom(helpersMaquinaria.validarExistaId),
