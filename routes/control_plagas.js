@@ -8,6 +8,7 @@ import { check } from "express-validator";
 const router = Router();
  
 router.get("/listar",[validarJWT],httpControlPlaga.getControlPlaga);
+router.get("/listarporfinca/:idFinca", httpControlPlaga.getControlPlagaByFinca);
 router.get("/listarid/:id", httpControlPlaga.getControlPlagaID);
 router.get("/listaractivados",httpControlPlaga.getControlPlagaactivado)
 router.get("/listardesactivados",httpControlPlaga.getControlPlagadesactivado)

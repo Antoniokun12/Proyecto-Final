@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const nominaSchema = new mongoose.Schema({
+  idFinca: { type: mongoose.Schema.Types.ObjectId, ref: 'Finca', required: true },
     idEmpleado: {type: mongoose.Schema.Types.ObjectId, ref: 'Empleado', required: true},
     fecha: {type: Date, default:Date.now},
     tipo: {type: String, required: true},

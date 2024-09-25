@@ -1,4 +1,6 @@
 import Cultivo from "../models/cultivos.js";
+import Parcela from "../models/parcelas.js";
+
 // import { json } from "express";
 // import cron from "node-cron"
 const httpCultivo = {
@@ -23,6 +25,27 @@ const httpCultivo = {
             res.status(500).json({ err: "Error al obtener cultivos" });
         }
     },
+
+getCultivosByFinca: async (req, res) => {
+        try {
+            const { idFinca } = req.params;
+    
+            // 1. Obtener las parcelas asociadas a la finca
+            const parcelas = await Parcela.find({ idFinca }).select('_id');
+            const idsParcelas = parcelas.map(parcela => parcela._id);
+    
+            // 2. Obtener los cultivos asociados a esas parcelas
+            const cultivos = await Cultivo.find({ idParcela: { $in: idsParcelas } })
+                .sort({ _id: -1 })
+                // .populate('idParcela'); 
+    
+            // 3. Enviar la respuesta con los cultivos encontrados
+            res.status(200).json({ cultivos });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ err: "Error al obtener cultivos" });
+        }
+    },          
     
     getCultivoID: async (req, res) => {
         const {_id} = req.params

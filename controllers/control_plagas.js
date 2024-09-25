@@ -1,4 +1,8 @@
 import ControlPlaga from "../models/control_plagas.js";
+import Parcela from "../models/parcelas.js";
+import Cultivo from "../models/cultivos.js";
+
+
 // import { json } from "express";
 // import cron from "node-cron"
 const httpControlPlaga = {
@@ -18,6 +22,32 @@ const httpControlPlaga = {
             // Obtener todos los registros de control de plagas sin ningún filtro
             const controlplaga = await ControlPlaga.find().sort({ _id: -1 });
             res.json({ controlplaga });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ err: "Error al obtener registros de control de plagas" });
+        }
+    },
+
+ getControlPlagaByFinca: async (req, res) => {
+        try {
+            const { idFinca } = req.params; 
+    
+            // 1. Obtener las parcelas asociadas a la finca
+            const parcelas = await Parcela.find({ idFinca }).select('_id');
+            const idsParcelas = parcelas.map(parcela => parcela._id);
+    
+            // 2. Obtener los cultivos asociados a esas parcelas
+            const cultivos = await Cultivo.find({ idParcela: { $in: idsParcelas } }).select('_id');
+            const idsCultivos = cultivos.map(cultivo => cultivo._id);
+    
+            // 3. Obtener los registros de control de plagas asociados a esos cultivos
+            const controlplaga = await ControlPlaga.find({ idCultivo: { $in: idsCultivos } })
+                .sort({ _id: -1 });
+                // .populate('idCultivo')
+
+    
+            // 4. Enviar la respuesta con los registros de control de plagas encontrados
+            res.status(200).json({ controlplaga });
         } catch (error) {
             console.error(error);
             res.status(500).json({ err: "Error al obtener registros de control de plagas" });

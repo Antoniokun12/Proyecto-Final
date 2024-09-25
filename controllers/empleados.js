@@ -2,6 +2,7 @@ import Empleado from "../models/empleados.js";
 // import { json } from "express";
 // import cron from "node-cron"
 const httpEmpleados = {
+   
     getEmpleados: async (req, res) => {
         try {
             const empleados = await Empleado.find().sort({ _id: -1 }); // Trae todos los empleados
@@ -11,11 +12,22 @@ const httpEmpleados = {
             res.status(500).json({ error: "Error al obtener empleados" });
         }
     },
-
     getEmpleadosID: async (req, res) => {
         const { id } = req.params
         const empleado = await Empleado.findById(id)
         res.json({ empleado })
+    },
+    getEmpleadosByFinca: async (req, res) => {
+        try {
+            const { idFinca } = req.params; 
+    
+            const empleados = await Empleado.find({ idFinca }).sort({ _id: -1 });
+    
+            res.status(200).json({ empleados });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ err: "Error al obtener empleados" });
+        }
     },
     getEmpleadoactivado: async (req, res) => {
         try {
@@ -38,8 +50,8 @@ const httpEmpleados = {
     },
     postEmpleados: async (req, res) => {
         try {
-            const { nombre, documento, correo, direccion, fechaNacimiento, telefono, estudios, descripcion } = req.body;
-            const empleado = new Empleado({ nombre, documento, correo, direccion, fechaNacimiento, telefono, estudios, descripcion, });
+            const { idFinca,nombre, documento, correo, direccion, fechaNacimiento, telefono, estudios, descripcion } = req.body;
+            const empleado = new Empleado({idFinca,nombre, documento, correo, direccion, fechaNacimiento, telefono, estudios, descripcion, });
             await empleado.save()
             console.log(empleado);
             res.json({ message: "empleado creado exitosamente", empleado });

@@ -9,6 +9,7 @@ import { validarJWT } from '../middlewares/validar-jwt.js';
 const router = Router();
 
 router.get("/listar",[validarJWT],httpComprador.getComprador);
+router.get("/listarporfinca/:idFinca", httpComprador.getCompradoresByFinca);
 router.get("/listarid/:id", httpComprador.getCompradorID);
 router.get("/listaractivados",httpComprador.getCompradoractivado)
 router.get("/listardesactivados",httpComprador.getCompradordesactivado)

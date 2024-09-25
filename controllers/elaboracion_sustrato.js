@@ -1,4 +1,9 @@
 import Sustrato from "../models/elaboracion_sustrato.js";
+import Parcela from "../models/parcelas.js";
+import Cultivo from "../models/cultivos.js";
+import Proceso from "../models/procesos.js";
+
+
 // import { json } from "express";
 // import cron from "node-cron"
 const httpElaboracionSustrato = {
@@ -18,6 +23,34 @@ const httpElaboracionSustrato = {
             // Obtener todos los sustratos sin ningún filtro
             const sustra = await Sustrato.find().sort({ _id: -1 });
             res.json({ sustra });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ err: "Error al obtener sustratos" });
+        }
+    },
+getSustratosByFinca: async (req, res) => {
+        try {
+            const { idFinca } = req.params; // Se asume que idFinca viene en los parámetros de la URL
+    
+            // 1. Obtener las parcelas asociadas a la finca
+            const parcelas = await Parcela.find({ idFinca }).select('_id');
+            const idsParcelas = parcelas.map(parcela => parcela._id);
+    
+            // 2. Obtener los cultivos asociados a esas parcelas
+            const cultivos = await Cultivo.find({ idParcela: { $in: idsParcelas } }).select('_id');
+            const idsCultivos = cultivos.map(cultivo => cultivo._id);
+    
+            // 3. Obtener los procesos asociados a esos cultivos
+            const procesos = await Proceso.find({ idCultivo: { $in: idsCultivos } }).select('_id');
+            const idsProcesos = procesos.map(proceso => proceso._id);
+    
+            // 4. Obtener los sustratos asociados a esos procesos
+            const sustratos = await Sustrato.find({ idProceso: { $in: idsProcesos } })
+                .sort({ _id: -1 })
+                // .populate('idProceso'); // Si quieres información adicional sobre el proceso
+    
+            // 5. Enviar la respuesta con los sustratos encontrados
+            res.status(200).json({ sustratos });
         } catch (error) {
             console.error(error);
             res.status(500).json({ err: "Error al obtener sustratos" });

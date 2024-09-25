@@ -9,6 +9,7 @@ import { check, body } from 'express-validator';
 const router = Router();
 
 router.get("/listar",[validarJWT], httpPreparaciones.getPreparaciones);
+router.get("/listarporfinca/:idFinca",httpPreparaciones.getPreparacionesByFinca);
 router.get("/listarid/:id",httpPreparaciones.getPreparacionesID);
 router.get("/listaractivados",httpPreparaciones.getSueloactivado)
 router.get("/listardesactivados",httpPreparaciones.getSuelodesactivado)

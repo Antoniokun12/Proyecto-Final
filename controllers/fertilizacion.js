@@ -1,4 +1,9 @@
 import Fertilizacion from "../models/fertilizacion.js";
+import Parcela from "../models/parcelas.js";
+import Cultivo from "../models/cultivos.js";
+
+
+
 // import { json } from "express";
 // import cron from "node-cron"
 const httpFertilizacion = {
@@ -21,6 +26,31 @@ const httpFertilizacion = {
         } catch (error) {
             console.error(error);
             res.status(500).json({ err: "Error al obtener Fertilizacion" });
+        }
+    },
+
+    getFertilizacionByFinca: async (req, res) => {
+        try {
+            const { idFinca } = req.params; // Se asume que idFinca viene en los parámetros de la URL
+    
+            // 1. Obtener las parcelas asociadas a la finca
+            const parcelas = await Parcela.find({ idFinca }).select('_id');
+            const idsParcelas = parcelas.map(parcela => parcela._id);
+    
+            // 2. Obtener los cultivos asociados a esas parcelas
+            const cultivos = await Cultivo.find({ idParcela: { $in: idsParcelas } }).select('_id');
+            const idsCultivos = cultivos.map(cultivo => cultivo._id);
+    
+            // 3. Obtener las fertilizaciones asociadas a esos cultivos
+            const fertilizaciones = await Fertilizacion.find({ idCultivo: { $in: idsCultivos } })
+                .sort({ _id: -1 })
+                // .populate('idCultivo'); // Si deseas obtener más información sobre el cultivo
+    
+            // 4. Enviar la respuesta con las fertilizaciones encontradas
+            res.status(200).json({ fertilizaciones });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ err: "Error al obtener fertilizaciones" });
         }
     },
     

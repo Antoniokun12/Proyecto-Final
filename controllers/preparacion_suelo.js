@@ -1,4 +1,6 @@
 import Suelo from "../models/preparacion_suelo.js";
+import Parcela from "../models/parcelas.js";
+
 // import { json } from "express";
 // import cron from "node-cron"
 const httpPreparaciones = {
@@ -23,6 +25,23 @@ const httpPreparaciones = {
         }
     },
     
+    getPreparacionesByFinca: async (req, res) => {
+        try {
+            const { idFinca } = req.params; 
+
+            const parcelas = await Parcela.find({ idFinca }).select('_id');
+
+            const idsParcelas = parcelas.map(parcela => parcela._id);
+
+                const preparaciones = await Suelo.find({ idParcela: { $in: idsParcelas } }).sort({ _id: -1 });
+    
+            res.json({ preparaciones });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ err: "Error al obtener preparaciones de suelo", error });
+        }
+    },
+
     getPreparacionesID: async (req, res) => {
         const {_id} = req.params
         const preparacion = await Suelo.findById(_id)

@@ -9,6 +9,7 @@ import { check, body } from 'express-validator';
 const router = Router();
 
 router.get("/listar",[validarJWT],httpFacturas.getFacturas);
+router.get("/listarporfinca/:idFinca",httpFacturas.getFacturasByFinca);
 router.get("/listarid/:id",httpFacturas.getFacturasID);
 
 router.post("/escribir", [

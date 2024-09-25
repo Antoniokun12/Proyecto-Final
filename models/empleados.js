@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const empleadosSchema = new mongoose.Schema({
+  idFinca: { type: mongoose.Schema.Types.ObjectId, ref: 'Finca', required: true },
   nombre: { type: String, require: true },
   documento: { type: String, required: true, unique: true },
   correo: { type: String, required: true, unique: true },
