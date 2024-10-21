@@ -75,55 +75,68 @@ const httpMaquinarias = {
         }
     },
     putAgregarMantenimiento: async (req, res) => {
-        const { id } = req.params;
-        const { mantenimiento } = req.body;
-    
         try {
+            const { id } = req.params;
+            const nuevoMantenimiento = req.body;
+        
+            // Validar que nuevoMantenimiento tenga todos los campos necesarios
+            if (!nuevoMantenimiento.responsable || !nuevoMantenimiento.observaciones || nuevoMantenimiento.precio === undefined) {
+              return res.status(400).json({ success: false, error: 'Datos de mantenimiento incompletos' });
+            }
+        
             const maquina = await Maquina_herramienta.findById(id);
             if (!maquina) {
-                return res.status(404).json({ error: "Máquina no encontrada" });
+              return res.status(404).json({ success: false, error: 'Máquina no encontrada' });
             }
-    
-            // Agregar nuevo mantenimiento
-            maquina.mantenimiento.push(mantenimiento);
-    
+        
+            // Asegurarse de que mantenimiento es un array
+            if (!Array.isArray(maquina.mantenimiento)) {
+              maquina.mantenimiento = [];
+            }
+        
+            // Agregar el nuevo mantenimiento
+            maquina.mantenimiento.push(nuevoMantenimiento);
+        
+            // Guardar la máquina actualizada
             await maquina.save();
-    
-            res.status(200).json({ message: "Mantenimiento agregado", maquina });
-        } catch (error) {
-            console.error("Error al agregar mantenimiento", error);
-            res.status(500).json({ error: "Error interno del servidor" });
-        }
-    },
-    putEditarMantenimiento: async (req, res) => {
+        
+            res.json({ 
+              success: true, 
+              message: "Mantenimiento agregado correctamente",
+              data: { maquina } 
+            });
+          } catch (error) {
+            console.error('Error al agregar mantenimiento:', error);
+            res.status(500).json({ success: false, error: 'Error al agregar mantenimiento' });
+          }
+        },
+     putEditarMantenimiento: async (req, res) => {
         const { id, mantenimientoId } = req.params;
         const { mantenimiento } = req.body;
-    
+      
         try {
-            const maquina = await Maquina_herramienta.findById(id);
-            if (!maquina) {
-                return res.status(404).json({ error: "Máquina no encontrada" });
-            }
-    
-            const mantenimientoItem = maquina.mantenimiento.id(mantenimientoId);
-            if (!mantenimientoItem) {
-                return res.status(404).json({ error: "Mantenimiento no encontrado" });
-            }
-    
-            // Actualizar los campos del mantenimiento encontrado
-            mantenimientoItem.fechamantenimiento = mantenimiento.fechamantenimiento;
-            mantenimientoItem.responsable = mantenimiento.responsable;
-            mantenimientoItem.observaciones = mantenimiento.observaciones;
-            mantenimientoItem.precio = mantenimiento.precio;
-    
-            await maquina.save();
-    
-            res.status(200).json({ message: "Mantenimiento actualizado", maquina });
+          const maquina = await Maquina_herramienta.findById(id);
+          if (!maquina) {
+            return res.status(404).json({ error: "Máquina no encontrada" });
+          }
+      
+          const mantenimientoItem = maquina.mantenimiento.id(mantenimientoId);
+          if (!mantenimientoItem) {
+            return res.status(404).json({ error: "Mantenimiento no encontrado" });
+          }
+      
+          mantenimientoItem.responsable = mantenimiento.responsable || mantenimientoItem.responsable;
+          mantenimientoItem.observaciones = mantenimiento.observaciones || mantenimientoItem.observaciones;
+          mantenimientoItem.precio = mantenimiento.precio || mantenimientoItem.precio;
+      
+          await maquina.save();
+      
+          res.status(200).json({ message: "Mantenimiento actualizado", maquina });
         } catch (error) {
-            console.error("Error al actualizar mantenimiento", error);
-            res.status(500).json({ error: "Error interno del servidor" });
+          console.error("Error al actualizar mantenimiento", error);
+          res.status(500).json({ error: "Error interno del servidor" });
         }
-    },
+      },      
     putAgregarProductoDesinfeccion: async (req, res) => {
         const { id } = req.params;
         const { desinfeccion } = req.body;
