@@ -146,18 +146,32 @@ const httpGastos = {
     putGastos: async (req, res) => {
         try {
             const { id } = req.params;
-            const { _id, ...resto } = req.body;
-        
-            const gastoActualizado = await Gasto.findByIdAndUpdate(id, resto, { new: true });
+            const { insumos, semillas, otros_gastos, ...resto } = req.body;
+    
+            // Recalcular el total manualmente
+            const totalInsumos = insumos.reduce((sum, insumo) => sum + insumo.sub_total, 0);
+            const totalSemillas = semillas.reduce((sum, semilla) => sum + semilla.sub_total, 0);
+            const totalOtrosGastos = otros_gastos.reduce((sum, otro) => sum + otro.monto, 0);
+            const total = totalInsumos + totalSemillas + totalOtrosGastos;
+    
+            // Actualizar el gasto incluyendo el total calculado
+            const gastoActualizado = await Gasto.findByIdAndUpdate(
+                id, 
+                { ...resto, insumos, semillas, otros_gastos, total }, 
+                { new: true }
+            );
+    
             if (!gastoActualizado) {
                 return res.status(404).json({ error: "Gasto no encontrado" });
             }
+    
             res.json({ message: "Gasto actualizado exitosamente", gasto: gastoActualizado });
         } catch (error) {
             console.error("Error al actualizar gasto:", error);
             res.status(400).json({ error: "No se pudo actualizar el gasto" });
         }
     }
+    
 };
 
 export default httpGastos;
